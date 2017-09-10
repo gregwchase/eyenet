@@ -43,10 +43,9 @@ def plot_classification_frequency(df, category, file_name, convert_labels = Fals
     plt.savefig(file_name)
 
 
+
 if __name__ == '__main__':
     labels = pd.read_csv("labels/trainLabels.csv")
 
-    # labels['level'] = change_labels(labels, 'level')
-
-    plot_classification_frequency(labels, "level", "Retinopathy_vs_Frequency_Binary", True)
     plot_classification_frequency(labels, "level", "Retinopathy_vs_Frequency_All")
+    plot_classification_frequency(labels, "level", "Retinopathy_vs_Frequency_Binary", True)
