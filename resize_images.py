@@ -3,17 +3,19 @@ import sys
 from PIL import Image
 
 
-def resize_images(path):
+def resize_images(path, new_path):
     for item in dirs:
         if os.path.isfile(path+item) and not item.startswith('.'):
-            im = Image.open(path+item)
+            img = Image.open(path+item)
             f, e = os.path.splitext(path+item)
-            imResize = im.resize((120,120), Image.ANTIALIAS)
-            imResize.save(f + '_resized.jpg', 'JPEG')
+            img_resize = img.resize((120,120), Image.ANTIALIAS)
+            new_path = 'sample-resized/'
+            # img_resize.save(f + '_resized.jpeg', 'JPEG')
+            img_resize.save(os.path.join(new_path,item))
 
 
 if __name__ == '__main__':
-    path = "sample/"
+    file_path = "sample/"
     new_path = "sample-resized/"
-    dirs = os.listdir(path)
-    resize_images(path = "sample/")
+    dirs = os.listdir(file_path)
+    resize_images(path = file_path, new_path = new_path)
