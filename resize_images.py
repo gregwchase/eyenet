@@ -2,6 +2,9 @@ import os
 import sys
 from PIL import Image
 
+# def create_directory(directory):
+#     if not os.path.exists(directory):
+#         os.makedirs(directory)
 
 def resize_images(path, new_path):
     for item in dirs:
