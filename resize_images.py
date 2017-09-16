@@ -6,10 +6,33 @@ from PIL import ImageFile
 import cv2
 
 def create_directory(directory):
+    '''
+    Creates a new folder in the specified directory if the folder doesn't exist.
+
+    INPUT
+        directory: Folder to be created, called as "folder/"
+
+    OUTPUT
+        New folder in the current directory
+    '''
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 def resize_images(path, new_path):
+    '''
+    Resizes images based on the specified dimensions.
+    Images are saves to the new_path directory
+
+    INPUT
+        path: Path where the current, unscaled images are contained.
+        new_path: Path to save the resized images
+
+    OUTPUT
+        All images resized and saved from the old folder to the new folder.
+    '''
+    create_directory(new_path)
+    dirs = os.listdir(path)
+
     for item in dirs:
         if os.path.isfile(path+item) and not item.startswith('.'):
             img = Image.open(path+item)
@@ -31,14 +54,14 @@ def resize_images_cv(path, new_path):
 
 if __name__ == '__main__':
     # Specify file paths
-    file_path = "train_001/"
-    new_path = "train_100_resized/"
+    # file_path = "sample/"
+    # new_path = "sample-resized/"
 
     # Create the directory if it doesn't exist
-    create_directory(new_path)
+    # create_directory(new_path)
 
     # Creates a list of file strings
-    dirs = os.listdir(file_path)
+    # dirs = os.listdir(file_path)
 
     # Resize the images, and save to the new directory
-    resize_images(path = file_path, new_path = new_path)
+    resize_images(path = 'sample/', new_path = "sample-resized/")
