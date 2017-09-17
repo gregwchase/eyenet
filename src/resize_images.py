@@ -54,5 +54,5 @@ def resize_images_cv(path, new_path):
 
 if __name__ == '__main__':
     resize_images(path = "../sample/", new_path='../sample-resized/', img_size=120)
-    # resize_images(path = '../data/train', new_path='../data/train-resized')
-    # resize_images(path = '../data/test', new_path='../data/test-resized')
+    # resize_images(path = '../data/train/', new_path='../data/train-resized/')
+    # resize_images(path = '../data/test/', new_path='../data/test-resized/')
