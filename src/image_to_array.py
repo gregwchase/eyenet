@@ -58,6 +58,7 @@ def save_to_pickle(py_object, pickle_name):
     '''
     pickle.dump(py_object, open(pickle_name, 'wb'))
 
+
 if __name__ == '__main__':
 
     labels = pd.read_csv("../labels/trainLabels.csv")
@@ -72,5 +73,5 @@ if __name__ == '__main__':
 
     # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
 
-    save_to_pickle(X_train, '../X_train.pkl')
+    save_to_pickle(X_train, '../data/X_train.pkl')
     save_to_pickle(X_test, '../data/X_test.pkl')
