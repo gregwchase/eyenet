@@ -1,12 +1,9 @@
-import os
-import sys
-import pandas as pd
-import numpy as np
 import cv2
-from PIL import Image
-from PIL import ImageFile
-# ImageFile.LOAD_TRUNCATED_IMAGES = True
-
+import numpy as np
+import pandas as pd
+import os
+import pickle
+import sys
 
 def change_image_name(df, column):
     '''
@@ -23,39 +20,57 @@ def change_image_name(df, column):
     return [i + '.jpeg' for i in df[column]]
 
 
-def image_to_array(path, img):
+def convert_images_to_arrays(file_path, df):
     '''
-    Converts each image to an array, and appends array to the labels
-    DataFrame, based on the image column equaling the image file name.
+    Converts each image to an array, and appends each array to a new NumPy
+    array, based on the image column equaling the image file name.
 
     INPUT
-
+        file_path: Specified file path for resized test and train images.
+        df: Pandas DataFrame being used to assist file imports.
 
     OUTPUT
-
-
+        NumPy array of image arrays.
     '''
-    lst_images = [i for i in os.listdir(path) if not i.startswith('.')]
+    # lst_images = [i for i in os.listdir(file_path) if not i.startswith('.')]
+    arr = np.empty(shape=(df.shape[0],120,120,3))
+
+    # for i in labels_sample['image']:
+    #     img = cv2.imread('../sample-resized/' + i)
+    #     X_train.append(img)
+
+    for i in df['image']:
+        img = cv2.imread(file_path + i)
+        np.append(arr, img)
+    return arr
+
+def save_to_pickle(py_object, pickle_name):
+    '''
+    Saves data object to Pickle file. Used for saving the train and test data.
+
+    INPUT
+        py_object: Data that will be saved to Pickle file.
+        file_path: Name specified for writing pickle file.
+            You can also specify the directory to save the file.
+
+    OUTPUT
+        Pickle file of train and test data.
+    '''
+    pickle.dump(py_object, open(pickle_name, 'wb'))
 
 if __name__ == '__main__':
 
     labels = pd.read_csv("../labels/trainLabels.csv")
 
     labels.image = change_image_name(labels, 'image')
-    labels['img_array'] = None
 
-    # Image to array code (insert into function when complete)
-    lst_images = [i for i in os.listdir("../sample-resized") if not  i.startswith('.')]
+    # labels_sample = labels.head(10)
 
-    img_name = "15_left.jpeg"
+    # For each image, read in, save to Pandas DataFrame
+    X_train = convert_images_to_arrays('../data/train-resized/', labels)
+    X_test = convert_images_to_arrays('../data/test-resized/', labels)
 
+    # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
 
-
-    if img_name == [i for i in labels['image']]:
-        labels['img_array'] = img
-
-    labels['img_array'] = img.where(labels['image'] == img_name,0)
-
-    # df['img_array'] = np.where(labels['image'] == img_name, img, 0)
-
-    df.query('(a < b) & (b < c)')
+    save_to_pickle(X_train, '../X_train.pkl')
+    save_to_pickle(X_test, '../data/X_test.pkl')
