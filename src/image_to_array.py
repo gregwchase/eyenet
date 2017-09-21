@@ -42,16 +42,16 @@ def convert_images_to_arrays_train(file_path, df):
 
 
 def convert_images_to_arrays_test(file_path):
-        '''
-        Converts each image to an array, and appends each array to a new NumPy
-        array, based on the image column equaling the image file name.
+    '''
+    Converts each image to an array, and appends each array to a new NumPy
+    array, based on the image column equaling the image file name.
 
-        INPUT
-            file_path: Specified file path for resized test and train images.
+    INPUT
+        file_path: Specified file path for resized test and train images.
 
-        OUTPUT
-            NumPy array of image arrays.
-        '''
+    OUTPUT
+        NumPy array of image arrays.
+    '''
 
     lst_imgs = [f for f in os.listdir(file_path) if f != '.DS_Store']
 
