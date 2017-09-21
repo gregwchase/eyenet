@@ -15,11 +15,11 @@ np.random.seed(1337)  # for reproducibility
 labels = pd.read_csv("../labels/trainLabels.csv")
 X_train = np.load("../data/X_train.npy")
 X_test = np.load("../data/X_test.npy")
-# y_train = np.array([1 if l >= 1 else 0 for l in labels['level']])
-y_train = np.array(labels['level'])
+y_train = np.array([1 if l >= 1 else 0 for l in labels['level']])
+# y_train = np.array(labels['level'])
 
 batch_size = 1000
-nb_classes = 5
+nb_classes = 2
 nb_epoch = 10
 
 img_rows, img_cols = 120, 120
