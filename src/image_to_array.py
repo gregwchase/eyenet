@@ -2,10 +2,12 @@ import cv2
 import numpy as np
 import pandas as pd
 import os
-import pickle
+# import pickle
 import sys
 from PIL import Image
 from PIL import ImageFile
+import time
+
 
 def change_image_name(df, column):
     '''
@@ -22,37 +24,7 @@ def change_image_name(df, column):
     return [i + '.jpeg' for i in df[column]]
 
 
-# def convert_images_to_arrays(file_path, df, train=True):
-#     '''
-#     Converts each image to an array, and appends each array to a new NumPy
-#     array, based on the image column equaling the image file name.
-#
-#     INPUT
-#         file_path: Specified file path for resized test and train images.
-#         df: Pandas DataFrame being used to assist file imports.
-#
-#     OUTPUT
-#         NumPy array of image arrays.
-#     '''
-#     if train:
-#         arr = np.empty(shape=(df.shape[0],120,120,3))
-#
-#     # for i in labels_sample['image']:
-#     #     img = cv2.imread('../sample-resized/' + i)
-#     #     X_train.append(img)
-#
-#     else:
-#         arr = np.empty(shape=(53576,120,120,3))
-#
-#     # for i in df['image']:
-#     #     img = cv2.imread(file_path + i)
-#     #     np.append(arr, img)
-#     for i in df['image']:
-#         img = Image.open(file_path + i)
-#         np.append(arr, img)
-#     return arr
-
-def convert_images_to_arrays(file_path, df):
+def convert_images_to_arrays_train(file_path, df):
     '''
     Converts each image to an array, and appends each array to a new NumPy
     array, based on the image column equaling the image file name.
@@ -64,53 +36,66 @@ def convert_images_to_arrays(file_path, df):
     OUTPUT
         NumPy array of image arrays.
     '''
-    arr = []
 
-    # for i in df['image']:
-    #     img = cv2.imread(file_path + i)
-    #     np.append(arr, img)
-    for i in df['image']:
-        img = np.array(Image.open(file_path + i))
-        arr.append(img)
-    return np.array(arr)
+    lst_imgs = [l for l in df['image']]
 
-def save_to_pickle(py_object, pickle_name):
+    return np.array([np.array(Image.open(file_path + img)) for img in lst_imgs])
+
+
+def convert_images_to_arrays_test(file_path):
+        '''
+        Converts each image to an array, and appends each array to a new NumPy
+        array, based on the image column equaling the image file name.
+
+        INPUT
+            file_path: Specified file path for resized test and train images.
+
+        OUTPUT
+            NumPy array of image arrays.
+        '''
+
+    lst_imgs = [f for f in os.listdir(file_path) if f != '.DS_Store']
+
+    return np.array([np.array(Image.open(file_path + img)) for img in lst_imgs])
+
+
+def save_to_array(arr_name, arr_object):
     '''
-    Saves data object to Pickle file. Used for saving the train and test data.
+    Saves data object as a NumPy file. Used for saving train and test arrays.
 
     INPUT
-        py_object: Data that will be saved to Pickle file.
-        file_path: Name specified for writing pickle file.
-            You can also specify the directory to save the file.
-
-    OUTPUT
-        Pickle file of train and test data.
+        arr_name: The name of the file you want to save.
+            This input takes a directory string.
+        arr_object: NumPy array of arrays. This object is saved as a NumPy file.
     '''
-    pickle.dump(py_object, open(pickle_name, 'wb'))
-
+    return np.save(arr_name, arr_object)
 
 if __name__ == '__main__':
+    start_time = time.time()
 
     labels = pd.read_csv("../labels/trainLabels.csv")
 
     labels.image = change_image_name(labels, 'image')
 
-    # labels_sample = labels.head(10)
+    labels_sample = labels.head(10)
 
-    # For each image, read in, save to Pandas DataFrame
     print("Writing Train Array")
-    # X_train = convert_images_to_arrays('../data/train-resized/', labels, train=True)
-    X_train = convert_images_to_arrays('../data/train-resized/', labels)
+    X_train = convert_images_to_arrays_train('../train-resized/', labels)
 
-    print("Saving Train Pickle")
-    save_to_pickle(X_train, '../data/X_train.pkl')
+    print(X_train.shape)
+
+    print("Saving Train Array")
+    save_to_array('../X_train.npy', X_train)
+
+    print("--- %s seconds ---" % (time.time() - start_time))
+
 
     print("Writing Test Array")
-    # X_test = convert_images_to_arrays('../data/test-resized/', labels, train=False)
-    X_test = convert_images_to_arrays('../data/test-resized/', labels)
+    X_test = convert_images_to_arrays_test('../test-resized/')
 
-    # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
-    print("Saving Test Pickle")
-    save_to_pickle(X_test, '../data/X_test.pkl')
+    print(X_test.shape)
 
-    print("Completed")
+    print("Saving Test Array")
+    save_to_array('../X_test.npy', X_test)
+
+    print("--- %s minutes ---" % (time.time() - start_time))
