@@ -36,14 +36,14 @@ kernel_size = (6, 6) # slides over image to learn features
 
 # reshape image for Keras, note that image_dim_ordering set in ~.keras/keras.json
 # don't change any of this`
-if K.image_dim_ordering() == 'th':
-    X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
-    X_test = X_test.reshape(X_test.shape[0], 1, img_rows, img_cols)
-    input_shape = (1, img_rows, img_cols)
-else:
-    X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, 1)
-    X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 1)
-    input_shape = (img_rows, img_cols, 1)
+# if K.image_dim_ordering() == 'th':
+#     X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
+#     X_test = X_test.reshape(X_test.shape[0], 1, img_rows, img_cols)
+#     input_shape = (1, img_rows, img_cols)
+# else:
+#     X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, 3)
+#     X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 3)
+#     input_shape = (img_rows, img_cols, 1)
 
 # don't change conversion or normalization
 X_train = X_train.astype('float32') # data was uint8 [0-255]
@@ -55,7 +55,7 @@ print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices (don't change)
-Y_train = np_utils.to_categorical(y_train, nb_classes) # cool
+y_train = np_utils.to_categorical(y_train, nb_classes) # cool
 # Y_test = np_utils.to_categorical(y_test, nb_classes)   # cool * 2
 # in Ipython you should compare Y_test to y_test
 
@@ -69,7 +69,8 @@ model = Sequential() # model is a linear stack of layers (don't change)
 model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
                     padding='valid',
                     strides = 1,
-                    input_shape=input_shape)) #first conv. layer (keep layer)
+                    # input_shape=input_shape
+                    input_shape=(35126, 120,120,3))) #first conv. layer (keep layer)
 model.add(Activation('relu')) # Activation specification necessary for Conv2D and Dense layers
 
 kernel_size = (4, 4) # slides over image to learn features
