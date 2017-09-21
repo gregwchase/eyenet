@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import pandas as pd
 import os
-# import pickle
 import sys
 from PIL import Image
 from PIL import ImageFile
@@ -80,22 +79,22 @@ if __name__ == '__main__':
     labels_sample = labels.head(10)
 
     print("Writing Train Array")
-    X_train = convert_images_to_arrays_train('../train-resized/', labels)
+    X_train = convert_images_to_arrays_train('../data/train-resized/', labels)
 
     print(X_train.shape)
 
     print("Saving Train Array")
-    save_to_array('../X_train.npy', X_train)
+    save_to_array('../data/X_train.npy', X_train)
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
 
     print("Writing Test Array")
-    X_test = convert_images_to_arrays_test('../test-resized/')
+    X_test = convert_images_to_arrays_test('../data/test-resized/')
 
     print(X_test.shape)
 
     print("Saving Test Array")
-    save_to_array('../X_test.npy', X_test)
+    save_to_array('../data/X_test.npy', X_test)
 
     print("--- %s minutes ---" % (time.time() - start_time))
