@@ -4,6 +4,8 @@ import pandas as pd
 import os
 import pickle
 import sys
+from PIL import Image
+from PIL import ImageFile
 
 def change_image_name(df, column):
     '''
@@ -20,7 +22,37 @@ def change_image_name(df, column):
     return [i + '.jpeg' for i in df[column]]
 
 
-def convert_images_to_arrays(file_path, df, train=True):
+# def convert_images_to_arrays(file_path, df, train=True):
+#     '''
+#     Converts each image to an array, and appends each array to a new NumPy
+#     array, based on the image column equaling the image file name.
+#
+#     INPUT
+#         file_path: Specified file path for resized test and train images.
+#         df: Pandas DataFrame being used to assist file imports.
+#
+#     OUTPUT
+#         NumPy array of image arrays.
+#     '''
+#     if train:
+#         arr = np.empty(shape=(df.shape[0],120,120,3))
+#
+#     # for i in labels_sample['image']:
+#     #     img = cv2.imread('../sample-resized/' + i)
+#     #     X_train.append(img)
+#
+#     else:
+#         arr = np.empty(shape=(53576,120,120,3))
+#
+#     # for i in df['image']:
+#     #     img = cv2.imread(file_path + i)
+#     #     np.append(arr, img)
+#     for i in df['image']:
+#         img = Image.open(file_path + i)
+#         np.append(arr, img)
+#     return arr
+
+def convert_images_to_arrays(file_path, df):
     '''
     Converts each image to an array, and appends each array to a new NumPy
     array, based on the image column equaling the image file name.
@@ -32,20 +64,15 @@ def convert_images_to_arrays(file_path, df, train=True):
     OUTPUT
         NumPy array of image arrays.
     '''
-    if train:
-        arr = np.empty(shape=(df.shape[0],120,120,3))
+    arr = []
 
-    # for i in labels_sample['image']:
-    #     img = cv2.imread('../sample-resized/' + i)
-    #     X_train.append(img)
-
-    else:
-        arr = np.empty(shape=(53576,120,120,3))
-
+    # for i in df['image']:
+    #     img = cv2.imread(file_path + i)
+    #     np.append(arr, img)
     for i in df['image']:
-        img = cv2.imread(file_path + i)
-        np.append(arr, img)
-    return arr
+        img = np.array(Image.open(file_path + i))
+        arr.append(img)
+    return np.array(arr)
 
 def save_to_pickle(py_object, pickle_name):
     '''
@@ -72,13 +99,15 @@ if __name__ == '__main__':
 
     # For each image, read in, save to Pandas DataFrame
     print("Writing Train Array")
-    X_train = convert_images_to_arrays('../data/train-resized/', labels, train=True)
+    # X_train = convert_images_to_arrays('../data/train-resized/', labels, train=True)
+    X_train = convert_images_to_arrays('../data/train-resized/', labels)
 
     print("Saving Train Pickle")
     save_to_pickle(X_train, '../data/X_train.pkl')
 
     print("Writing Test Array")
-    X_test = convert_images_to_arrays('../data/test-resized/', labels, train=False)
+    # X_test = convert_images_to_arrays('../data/test-resized/', labels, train=False)
+    X_test = convert_images_to_arrays('../data/test-resized/', labels)
 
     # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
     print("Saving Test Pickle")
