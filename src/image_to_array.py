@@ -83,3 +83,5 @@ if __name__ == '__main__':
     # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
     print("Saving Test Pickle")
     save_to_pickle(X_test, '../data/X_test.pkl')
+
+    print("Completed")
