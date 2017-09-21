@@ -78,7 +78,7 @@ if __name__ == '__main__':
     save_to_pickle(X_train, '../data/X_train.pkl')
 
     print("Writing Test Array")
-    X_test = convert_images_to_arrays('../data/test-resized/', labels train=False)
+    X_test = convert_images_to_arrays('../data/test-resized/', labels, train=False)
 
     # X_train = convert_images_to_arrays('../sample-resized/', labels_sample)
     print("Saving Test Pickle")
