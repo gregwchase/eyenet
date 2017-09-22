@@ -84,7 +84,7 @@ model.add(BatchNormalization())
 model.add(Activation('tanh'))
 model.add(Dropout(0.15))
 
-model.add(Dense(1))
+model.add(Dense(nb_classes))
 # model.add(Activation('softmax'))
 model.add(Activation('sigmoid'))
 model.add(BatchNormalization())
