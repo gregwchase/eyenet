@@ -82,7 +82,7 @@ model.compile(loss = 'categorical_crossentropy',
     optimizer='adam',
     metrics=['accuracy'])
 
-earlyStopping = EarlyStopping(monitor='val_loss',
+earlyStopping = EarlyStopping(monitor='acc', #val_loss
     min_delta=0.001, patience=0, verbose=0, mode='auto')
 
 tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
