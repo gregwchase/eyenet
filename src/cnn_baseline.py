@@ -101,10 +101,13 @@ model.compile(loss = 'categorical_crossentropy',
 earlyStopping = EarlyStopping(monitor='acc', #val_loss
     min_delta=0.001, patience=0, verbose=0, mode='auto')
 
-tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
+tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=1, write_graph=True, write_images=True)
 
 model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch,
     verbose=1, validation_split = 0.2, class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
 
 # prediction = model.predict(X_test)
 #
+
+# if __name__ == '__main__':
+#     pass
