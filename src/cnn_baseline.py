@@ -85,8 +85,7 @@ model.add(Activation('tanh'))
 model.add(Dropout(0.15))
 
 model.add(Dense(nb_classes))
-# model.add(Activation('softmax'))
-model.add(Activation('sigmoid'))
+model.add(Activation('softmax'))
 model.add(BatchNormalization())
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
