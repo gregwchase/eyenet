@@ -23,6 +23,7 @@ nb_classes = 2
 nb_epoch = 10
 
 img_rows, img_cols = 120, 120
+channels = 3
 nb_filters = 6
 pool_size = (2, 2)
 kernel_size = (6, 6)
@@ -48,7 +49,7 @@ model = Sequential()
 model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
     padding = 'valid',
     strides = 1,
-    input_shape = (120,120,3)))
+    input_shape = (img_rows,img_cols,channels)))
 
 model.add(Activation('relu'))
 
