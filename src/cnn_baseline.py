@@ -23,7 +23,7 @@ nb_classes = 2
 nb_epoch = 10
 
 img_rows, img_cols = 120, 120
-nb_filters = 12
+nb_filters = 6
 pool_size = (2, 2)
 kernel_size = (6, 6)
 
