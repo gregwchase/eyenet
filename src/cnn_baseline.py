@@ -53,7 +53,7 @@ model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
 
 model.add(Activation('relu'))
 
-kernel_size = (4,4)
+kernel_size = (2,2)
 
 model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))
