@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 
 from keras.layers.normalization import BatchNormalization
+from keras.optimizers import SGD
 
 np.random.seed(1337)  # for reproducibility
 
