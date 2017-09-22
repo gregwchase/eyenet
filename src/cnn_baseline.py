@@ -11,6 +11,7 @@ import numpy as np
 
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
+from keras.utils import plot_model
 
 np.random.seed(1337)  # for reproducibility
 
@@ -89,6 +90,10 @@ model.add(Activation('softmax'))
 model.add(BatchNormalization())
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+
+model.summary()
+plot_model(model, to_file='../images/cnn_baseline_model.png')
+
 model.compile(loss = 'categorical_crossentropy',
     optimizer=sgd, #'adam'
     metrics=['accuracy'])
