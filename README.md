@@ -47,8 +47,8 @@ The preprocessing pipeline is the following:
 
 ## Neural Network Architecture
 
-The model is built using Keras, while utilizing TensorFlow as the backend.
-TensorFlow was chosen as the backend for a few reasons: better performance over
+The model is built using Keras, utilizing TensorFlow as the backend.
+TensorFlow was chosen as the backend due to better performance over
 Theano, and the ability to visualize the neural network using TensorBoard.
 
 
