@@ -1,6 +1,4 @@
-# EyeNet
-
-## Improved Treatment of Diabetic Retinopathy Using Deep Learning
+# EyeNet - Treatment of Diabetic Retinopathy Using Deep Learning
 
 ## Objective
 
