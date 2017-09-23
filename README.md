@@ -14,11 +14,21 @@ The need for a comprehensive and automated method of DR screening has long been 
 * Time is lost between getting your eyes scanned, having them analyzed, and scheduling a follow-up appointment. By being able to process images in real-time, this project allows people to seek & schedule treatment the same day.
 
 
+## Table of Contents
+1. [Data](#data)
+2. [Exploratory Data Analysis](#exploratory-data-analysis)
+3. [Preprocessing](#preprocessing)
+4. [CNN Architecture](#neural-network-architecture)
+5. [Next Steps](#next-steps)
+6. [References](#references)
+
 ## Data
 
 The data originates from a [2015 Kaggle competition](https://www.kaggle.com/c/diabetic-retinopathy-detection). However, this data isn't a typical Kaggle dataset. In most Kaggle competitions, the data has already been cleaned, giving the data scientist very little to preprocess. With this dataset, this isn't the case.
 
 All images are taken of different people, using different cameras, and of different sizes. Pertaining to the preprocessing section, this data is extremely noisy, and requires multiple preprocessing steps to get all images to a useable format for training a model.
+
+The training data is comprised of 35,126 images, while the test data is 53,576 images.
 
 
 ## Exploratory Data Analysis
@@ -27,6 +37,9 @@ The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
 ![EDA - Class Imbalance](images/eda/Retinopathy_vs_Frequency_All.png)
+
+Of the original training data, 25,810 images are classified as not having retinopathy,
+while 9,316 are classified as having retinopathy.
 
 Due to the class imbalance, steps were taken in preprocessing in order to rectify the imbalance, and when training the model.
 
@@ -49,6 +62,7 @@ The model is built using Keras, utilizing TensorFlow as the backend.
 TensorFlow was chosen as the backend due to better performance over
 Theano, and the ability to visualize the neural network using TensorBoard.
 
+## Next Steps
 
 ## References
 
