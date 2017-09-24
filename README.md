@@ -49,12 +49,19 @@ Due to the class imbalance, steps were taken in preprocessing in order to rectif
 The preprocessing pipeline is the following:
 
 1. Download all images to EC2 using the [download script](src/download_data.sh).
-2. Crop all images
-3. Zoom in on images
-4. Rotate images (pertaining to class imbalance)
-5. Resize images to a uniform size, using the [rotation script](src/resize_images.py).
-6. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py).
+2. Crop & resize all images using the [resizing script](src/resize_images.py) and the [preprocessing script](src/preprocess_images.py).
+3. Rotate images (pertaining to class imbalance).
+4. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py).
 
+
+### Crop All Images
+All images were scaled down to 256 by 256. Despite taking longer to train, the
+detail present in photos of this size were much greater then at 128 by 128.
+
+Additionally, 403 images were dropped from the training set. Scikit-Image raised
+multiple warnings during resizing, due to the images having no color space in them.
+Because of this, any images that were completely black were removed from the
+training data.
 
 ## Neural Network Architecture
 
