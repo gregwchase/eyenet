@@ -6,9 +6,9 @@ from PIL import Image
 from PIL import ImageFile
 import time
 
-def subset_images(file_path, df):
+def find_black_images(file_path, df):
     '''
-    Creates a list of images that are not black (np.mean(img) != 0)
+    Creates a column of images that are not black (np.mean(img) != 0)
 
     INPUT
         file_path: file_path to the images to be analyzed.
@@ -18,7 +18,7 @@ def subset_images(file_path, df):
     OUTPUT
         Column indicating if the photo is pitch black or not.
     '''
-    
+
     lst_imgs = [l for l in df['image']]
     return [1 if np.mean(np.array(Image.open(file_path + img))) == 0 else 0 for img in lst_imgs]
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     trainLabels['image'] = [i + '.jpeg' for i in trainLabels['image']]
     trainLabels['black'] = np.nan
 
-    trainLabels['black'] = subset_images('../data/train-resized-256/', trainLabels)
+    trainLabels['black'] = find_black_images('../data/train-resized-256/', trainLabels)
     trainLabels = trainLabels.loc[trainLabels['black'] == 0]
     trainLabels.to_csv('trainLabels_master.csv', index=False, header=True)
 
