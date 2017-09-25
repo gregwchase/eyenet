@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     trainLabels = pd.read_csv("../labels/trainLabels_master.csv")
 
-    lst_imgs = get_lst_images('../train/train-resized-256')
+    lst_imgs = get_lst_images('../data/train-resized-256/')
 
     new_trainLabels = pd.DataFrame({'image': lst_imgs})
     new_trainLabels['image2'] = new_trainLabels.image
