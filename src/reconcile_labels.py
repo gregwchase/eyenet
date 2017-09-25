@@ -39,4 +39,4 @@ if __name__ == '__main__':
     print(trainLabels.head(100))
 
     print("Writing CSV")
-    pd.to_csv('../labels/trainLabels_master_256.csv', index=False, header=True)
+    trainLabels.to_csv('../labels/trainLabels_master_256.csv', index=False, header=True)
