@@ -113,8 +113,10 @@ earlyStopping = EarlyStopping(monitor='acc', #val_loss
 
 tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=None, write_graph=True, write_images=True)
 
-model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch, # validation_split = 0.2,
-    verbose=1, validation_data=(X_test, y_test), class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
+model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch, validation_split = 0.2,
+    verbose=1,
+    # validation_data=(X_test, y_test),
+    class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
 
 
 score = model.evaluate(X_test, y_test, verbose=0)
