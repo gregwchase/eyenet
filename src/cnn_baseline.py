@@ -13,20 +13,27 @@ from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 # from keras.utils import plot_model
 
+from sklearn.model_selection import train_test_split
+
+
 np.random.seed(1337)  # for reproducibility
 
 
-labels = pd.read_csv("../labels/trainLabels.csv")
-X_train = np.load("../data/X_train.npy")
-X_test = np.load("../data/X_test.npy")
-y_train = np.array([1 if l >= 1 else 0 for l in labels['level']])
+labels = pd.read_csv("../labels/trainLabels_master_256.csv")
+X = np.load("../data/X_train_256.npy")
+# X_test = np.load("../data/X_test.npy")
+y = np.array([1 if l >= 1 else 0 for l in labels['level']])
 # y_train = np.array(labels['level'])
+
+print("Splitting data into test/ train datasets")
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
 
 batch_size = 1000
 nb_classes = 2
 nb_epoch = 10
 
-img_rows, img_cols = 120, 120
+img_rows, img_cols = 256, 256
 channels = 3
 nb_filters = 6
 pool_size = (2, 2)
@@ -35,6 +42,7 @@ kernel_size = (6, 6)
 X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, 3)
 X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 3)
 print("X_train Shape: ", X_train.shape)
+print("X_test Shape: ", X_test.shape)
 
 input_shape = (img_rows, img_cols, 3)
 
@@ -45,7 +53,9 @@ X_train /= 255
 X_test /= 255
 
 y_train = np_utils.to_categorical(y_train, nb_classes)
+y_test = np_utils.to_categorical(y_test, nb_classes)
 print("y_train Shape: ", y_train.shape)
+print("y_test Shape: ", y_test.shape)
 
 
 # CNN Model
@@ -103,8 +113,13 @@ earlyStopping = EarlyStopping(monitor='acc', #val_loss
 
 tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=None, write_graph=True, write_images=True)
 
-model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch,
-    verbose=1, validation_split = 0.2, class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
+model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch, # validation_split = 0.2,
+    verbose=1, validation_data=(X_test, y_test), class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
+
+
+score = model.evaluate(X_test, Y_test, verbose=0)
+print('Test score:', score[0])
+print('Test accuracy:', score[1]) # this is the one we care about
 
 # prediction = model.predict(X_test)
 #
