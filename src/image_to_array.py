@@ -36,7 +36,7 @@ def convert_images_to_arrays_train(file_path, df):
         NumPy array of image arrays.
     '''
 
-    lst_imgs = [l for l in df['image']]
+    lst_imgs = [l for l in df['train_image_name']]
 
     return np.array([np.array(Image.open(file_path + img)) for img in lst_imgs])
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     labels = pd.read_csv("../labels/trainLabels_master_256.csv")
 
     # labels.image = change_image_name(labels, 'image')
-    labels = list(labels.train_image_name)
+    # labels = list(labels.train_image_name)
 
     # labels_sample = labels.head(10)
 
