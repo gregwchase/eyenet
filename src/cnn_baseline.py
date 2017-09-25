@@ -117,7 +117,7 @@ model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch, # validati
     verbose=1, validation_data=(X_test, y_test), class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
 
 
-score = model.evaluate(X_test, Y_test, verbose=0)
+score = model.evaluate(X_test, y_test, verbose=0)
 print('Test score:', score[0])
 print('Test accuracy:', score[1]) # this is the one we care about
 
