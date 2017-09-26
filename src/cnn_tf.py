@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 
 np.random.seed(1337)
 
+# Read in data
 labels = pd.read_csv("../labels/trainLabels_master_256.csv")
 X = np.load("../data/X_train_256.npy")
 y = np.array([1 if l >= 1 else 0 for l in labels['level']])
