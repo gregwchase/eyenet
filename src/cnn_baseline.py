@@ -74,9 +74,9 @@ model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 # model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-kernel_size = (4,4)
-model.add(ConvD2(nb_filters), (kernel_size[0], kernel_size[1]))
-model.add(Activation('relu'))
+# kernel_size = (4,4)
+# model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+# model.add(Activation('relu'))
 
 model.add(MaxPooling2D(pool_size=pool_size))
 model.add(Dropout(0.15))
@@ -118,9 +118,9 @@ earlyStopping = EarlyStopping(monitor='acc', #val_loss
 tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=None, write_graph=True, write_images=True)
 
 model.fit(X_train, y_train, batch_size = batch_size, epochs=nb_epoch,
-    # validation_split = 0.2,
+    validation_split = 0.2,
     verbose=1,
-    validation_data=(X_test, y_test),
+    #  validation_data=(X_test, y_test),
     class_weight = 'auto', shuffle=True, callbacks = [earlyStopping, tbCallBack])
 
 

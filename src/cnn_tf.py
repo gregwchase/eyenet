@@ -18,13 +18,13 @@ np.random.seed(1337)
 labels = pd.read_csv("../labels/trainLabels_master_256.csv")
 X = np.load("../data/X_train_256.npy")
 y = np.array([1 if l >= 1 else 0 for l in labels['level']])
-
+# y = np.array(labels['level'])
 
 print("Splitting data into test/ train datasets")
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 
-batch_size = 500
+batch_size = 1000
 nb_classes = 2
 nb_epoch = 20
 
