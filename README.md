@@ -19,8 +19,9 @@ The need for a comprehensive and automated method of DR screening has long been 
 2. [Exploratory Data Analysis](#exploratory-data-analysis)
 3. [Preprocessing](#preprocessing)
 4. [CNN Architecture](#neural-network-architecture)
-5. [Next Steps](#next-steps)
-6. [References](#references)
+5. [Results](#results)
+6. [Next Steps](#next-steps)
+7. [References](#references)
 
 ## Data
 
@@ -36,6 +37,10 @@ The training data is comprised of 35,126 images, while the test data is 53,576 i
 The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
+<p align=“center”>
+<img height=“400" src=“https://github.com/gregwchase/dsi-capstone/blob/master/images/eda/Retinopathy_vs_Frequency_All.png“>
+</p>
+
 ![EDA - Class Imbalance](images/eda/Retinopathy_vs_Frequency_All.png)
 
 Of the original training data, 25,810 images are classified as not having retinopathy,
@@ -50,18 +55,30 @@ The preprocessing pipeline is the following:
 
 1. Download all images to EC2 using the [download script](src/download_data.sh).
 2. Crop & resize all images using the [resizing script](src/resize_images.py) and the [preprocessing script](src/preprocess_images.py).
-3. Rotate images (pertaining to class imbalance).
+3. Rotate & mirror all images using the [rotation script](src/rotate_images.py).
 4. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py).
 
+### Download All Images to EC2
+The images were downloaded using the Kaggle CLI. Running this on an EC2 instance
+allows you to download the images in about 30 minutes. All images are then placed
+in their respective folders, and expanded from their compressed files. In total,
+the original dataset totals 89 gigabytes.
 
-### Crop All Images
+### Crop/ Resize All Images
 All images were scaled down to 256 by 256. Despite taking longer to train, the
 detail present in photos of this size were much greater then at 128 by 128.
 
 Additionally, 403 images were dropped from the training set. Scikit-Image raised
-multiple warnings during resizing, due to the images having no color space in them.
+multiple warnings during resizing, due to these images having no color space.
 Because of this, any images that were completely black were removed from the
 training data.
+
+### Rotate/ Mirror All Images
+All images were rotated and mirrored.Images without retinopathy were mirrored;
+images that had retinopathy were mirrored, and rotated 90, 120, 180, and 270
+degrees. Because of this, the class imbalance is rectified, with a few thousand
+more images having retinopathy.
+
 
 ## Neural Network Architecture
 
@@ -69,7 +86,20 @@ The model is built using Keras, utilizing TensorFlow as the backend.
 TensorFlow was chosen as the backend due to better performance over
 Theano, and the ability to visualize the neural network using TensorBoard.
 
+The architecture for the network is the following:
+* 3 Conv2D layers
+* 1 Pooling layer
+* 2 Dense layers, with the final layer being for classification
+
+## Results
+The model was created to classify whether or not a patient has retinopathy.
+The best model performs with 82% accuracy on the training data, with 79%
+accuracy on the test and validation data.
+
 ## Next Steps
+1. Program the neural network to retrain with new photos.
+2. Port the Keras model to CoreML, and deploy to an iOS application.
+
 
 ## References
 
