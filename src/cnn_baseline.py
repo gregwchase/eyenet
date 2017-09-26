@@ -29,7 +29,7 @@ print("Splitting data into test/ train datasets")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
-batch_size = 100
+batch_size = 400
 nb_classes = 2
 nb_epoch = 10
 
