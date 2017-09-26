@@ -67,7 +67,7 @@ model.add(Activation('relu'))
 
 
 kernel_size = (2,2)
-model.add(Conv2D(nb_filters), (kernel_size[0], kernel_size[1]))
+model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
 model.add(Activation('relu'))
 
 
@@ -79,16 +79,16 @@ model.add(Flatten())
 print("Model flattened out to: ", model.output_shape)
 
 
-model.add(Dense(64))
+model.add(Dense(128))
 model.add(Activation('tanh'))
 
 
-model.add(Dense(32))
-model.add(Activation('tanh'))
+# model.add(Dense(32))
+# model.add(Activation('tanh'))
 
 
-model.add(Dense(16))
-model.add(Activation('tanh'))
+# model.add(Dense(16))
+# model.add(Activation('tanh'))
 
 
 model.add(Dense(nb_classes))
