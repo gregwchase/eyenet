@@ -36,7 +36,9 @@ if __name__ == '__main__':
 
     trainLabels = pd.merge(trainLabels, new_trainLabels, how='outer', on='image')
     trainLabels.drop(['black'], axis = 1, inplace=True)
-    print(trainLabels.head(100))
+    # print(trainLabels.head(100))
+    trainLabels = trainLabels.dropna()
+    print(trainLabels.shape)
 
     print("Writing CSV")
-    trainLabels.to_csv('../labels/trainLabels_master_256.csv', index=False, header=True)
+    trainLabels.to_csv('../labels/trainLabels_master_256_no_nan.csv', index=False, header=True)
