@@ -30,7 +30,7 @@ nb_epoch = 20
 
 img_rows, img_cols = 256, 256
 channels = 3
-nb_filters = 16
+nb_filters = 32
 pool_size = (2,2)
 kernel_size = (16,16)
 
