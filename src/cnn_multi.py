@@ -138,9 +138,9 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 if __name__ == '__main__':
 
     # Specify parameters before model is run.
-    batch_size = 1000
+    batch_size = 5000
     nb_classes = 2
-    nb_epoch = 1
+    nb_epoch = 20
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -189,10 +189,10 @@ if __name__ == '__main__':
 
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
-    # prediction = model.predict(X_test)
 
     print("Saving Model")
-    model.save('dev_model.h5')
+    model.save('DR_Two_Classes.h5')
+
 
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
