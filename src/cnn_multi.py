@@ -137,6 +137,17 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 if __name__ == '__main__':
 
+    # Specify parameters before model is run.
+    batch_size = 1000
+    nb_classes = 2
+    nb_epoch = 10
+
+    img_rows, img_cols = 256, 256
+    channels = 3
+    nb_filters = 32
+    # pool_size = (2,2)
+    kernel_size = (16,16)
+
     # Import data
     labels = pd.read_csv("../labels/trainLabels_master_256.csv")
     X = np.load("../data/X_train_256.npy")
@@ -165,17 +176,6 @@ if __name__ == '__main__':
 
     X_train /= 255
     X_test /= 255
-
-    # Specify parameters before model is run.
-    batch_size = 1000
-    nb_classes = 2
-    nb_epoch = 10
-
-    img_rows, img_cols = 256, 256
-    channels = 3
-    nb_filters = 32
-    # pool_size = (2,2)
-    kernel_size = (16,16)
 
 
     y_train = np_utils.to_categorical(y_train, nb_classes)
