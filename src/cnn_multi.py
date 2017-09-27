@@ -43,7 +43,7 @@ def reshape_data(arr, img_rows, img_cols, channels):
     OUTPUT
         Reshaped array of NumPy arrays.
     '''
-    return arr.reshape(X_train.shape[0], img_rows, img_cols, channels)
+    return arr.reshape(arr.shape[0], img_rows, img_cols, channels)
 
 
 def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes):
@@ -131,7 +131,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                 # class_weight='auto',
                 callbacks=[stop, tensor_board])
 
-
+    return model
 
 
 
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 2
-    nb_epoch = 10
+    nb_epoch = 1
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -187,9 +187,15 @@ if __name__ == '__main__':
     print("Training Model")
 
 
-    cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
+    model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
+    # prediction = model.predict(X_test)
+
+    print("Saving Model")
+    model.save('dev_model.h5')
 
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
+
+    print("Completed")
