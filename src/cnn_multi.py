@@ -81,9 +81,9 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
-    kernel_size = (4,4)
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    # kernel_size = (4,4)
+    # model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
 
     kernel_size = (2,2)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
@@ -138,7 +138,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 if __name__ == '__main__':
 
     # Specify parameters before model is run.
-    batch_size = 5000
+    batch_size = 1000
     nb_classes = 2
     nb_epoch = 20
 
