@@ -40,7 +40,7 @@ The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
 <p align = "center">
-![EDA - Class Imbalance](images/eda/Retinopathy_vs_Frequency_All.png)
+<img align="center" src="images/eda/Retinopathy_vs_Frequency_All.png" alt="EDA - Class Imbalance"/>
 </p>
 
 Of the original training data, 25,810 images are classified as not having retinopathy,
