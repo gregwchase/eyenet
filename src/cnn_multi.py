@@ -105,7 +105,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(Dense(128))
-    model.add(Activation('tanh'))
+    model.add(Activation('sigmoid'))
 
     # model.add(Dense(64))
     # model.add(Activation('tanh'))
@@ -116,10 +116,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     # model.summary()
 
-    ada_delta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
+    # ada_delta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
 
     model.compile(loss = 'categorical_crossentropy',
-                    optimizer=ada_delta,
+                    optimizer='adam',
                     metrics=['accuracy'])
 
 
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 5
-    nb_epoch = 5
+    nb_epoch = 10
 
     img_rows, img_cols = 256, 256
     channels = 3
