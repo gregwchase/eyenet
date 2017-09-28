@@ -9,7 +9,7 @@ from keras.callbacks import TensorBoard
 import pandas as pd
 import numpy as np
 from keras.layers.normalization import BatchNormalization
-from keras.optimizers import SGD
+from keras.optimizers import SGD, Adadelta
 from sklearn.model_selection import train_test_split
 # from sklearn.utils import class_weight
 
@@ -116,9 +116,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     # model.summary()
 
+    ada_delta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
 
     model.compile(loss = 'categorical_crossentropy',
-                    optimizer='adam',
+                    optimizer=ada_delta,
                     metrics=['accuracy'])
 
 
