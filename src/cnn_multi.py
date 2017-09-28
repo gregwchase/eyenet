@@ -12,7 +12,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD, Adadelta
 from sklearn.model_selection import train_test_split
 # from sklearn.utils import class_weight
-
+import os
 np.random.seed(1337)
 
 
@@ -146,10 +146,12 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 if __name__ == '__main__':
 
+    # Specify GPU's to Use
+    os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2,3"
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 5
-    nb_epoch = 10
+    nb_epoch = 20
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -200,8 +202,8 @@ if __name__ == '__main__':
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
 
-    # print("Saving Model")
-    # model.save('DR_All_Classes.h5')
+    print("Saving Model")
+    model.save('DR_All_Classes.h5')
 
 
     score = model.evaluate(X_test, y_test, verbose=0)

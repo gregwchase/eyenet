@@ -11,7 +11,7 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
-
+import os
 np.random.seed(1337)
 
 
@@ -137,6 +137,8 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 if __name__ == '__main__':
 
+    # Specify GPU's
+    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 2
