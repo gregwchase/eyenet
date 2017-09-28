@@ -11,6 +11,7 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
+# from sklearn.utils import class_weight
 
 np.random.seed(1337)
 
@@ -73,25 +74,30 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
         padding='valid',
         strides=4,
         input_shape=(img_rows, img_cols, channels)))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
     kernel_size = (8,8)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
+    # model.add(Dropout(0.50))
 
-
-    # kernel_size = (4,4)
-    # model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    # model.add(Activation('relu'))
+    kernel_size = (4,4)
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
+    # model.add(Dropout(0.20))
 
     kernel_size = (2,2)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
-
+    # model.add(MaxPooling2D(pool_size=(2, 2)))
+    # model.add(Dropout(0.25))
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.50))
+    # model.add(BatchNormalization())
+    model.add(Dropout(0.20))
 
 
     model.add(Flatten())
@@ -101,12 +107,14 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Dense(128))
     model.add(Activation('tanh'))
 
+    # model.add(Dense(64))
+    # model.add(Activation('tanh'))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
 
-    model.summary()
+    # model.summary()
 
 
     model.compile(loss = 'categorical_crossentropy',
@@ -124,11 +132,11 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
 
-
+    # cls_weights = class_weight.compute_class_weight('balanced', np.unique(y_train), y_train)
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
                 validation_data=(X_test,y_test),
-                # class_weight='auto',
+                class_weight= 'auto',
                 callbacks=[stop, tensor_board])
 
     return model
@@ -139,8 +147,8 @@ if __name__ == '__main__':
 
     # Specify parameters before model is run.
     batch_size = 1000
-    nb_classes = 2
-    nb_epoch = 20
+    nb_classes = 5
+    nb_epoch = 5
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -149,10 +157,11 @@ if __name__ == '__main__':
     kernel_size = (16,16)
 
     # Import data
-    labels = pd.read_csv("../labels/trainLabels_master_256.csv")
-    X = np.load("../data/X_train_256.npy")
-    y = np.array([1 if l >= 1 else 0 for l in labels['level']])
-    # y = np.array(labels['level'])
+    labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
+    # labels['level'] = labels['level'].fillna(0)
+    X = np.load("../data/X_train_256_v2.npy")
+    # y = np.array([1 if l >= 1 else 0 for l in labels['level']])
+    y = np.array(labels['level'])
 
 
     print("Splitting data into test/ train datasets")
@@ -190,8 +199,8 @@ if __name__ == '__main__':
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
 
-    print("Saving Model")
-    model.save('DR_Two_Classes.h5')
+    # print("Saving Model")
+    # model.save('DR_All_Classes.h5')
 
 
     score = model.evaluate(X_test, y_test, verbose=0)
