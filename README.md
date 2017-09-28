@@ -114,9 +114,11 @@ accuracy on the test and validation data.
 
 
 ## Tech Stack
-![AWS](images/tech_stack/aws_logo.svg)
-![Keras](images/tech_stack/keras_logo.png)
-![NumPy](images/tech_stack/numpy_logo.jpg)
-![OpenCV](images/tech_stack/openCV_logo.png)
-![SKImage](images/tech_stack/skimage_logo.png)
-![TensorFlow](images/tech_stack/tensorflow_logo.png)
+<p align=“center”>
+<img src="images/tech_stack/aws_logo.svg" alt="AWS" style="width: 300px;"/>
+<img src="images/tech_stack/keras_logo.png" alt="Keras" style="width: 300px;"/>
+<img src="images/tech_stack/numpy_logo.jpg" alt="NumPy" style="width: 300px;"/>
+<img src="images/tech_stack/openCV_logo.png" alt="OpenCV" style="width: 250px;"/>
+<img src="images/tech_stack/skimage_logo.png" alt="SKImage" style="width: 300px;"/>
+<img src="images/tech_stack/tensorflow_logo.png" alt="TensorFlow" style="width: 300px;"/>
+</p>
