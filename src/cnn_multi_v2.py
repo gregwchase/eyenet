@@ -105,7 +105,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(Dense(128))
-    model.add(Activation('relu'))
+    model.add(Activation('tanh'))
 
     # model.add(Dense(64))
     # model.add(Activation('tanh'))
@@ -147,7 +147,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 if __name__ == '__main__':
 
     # Specify GPU's to Use
-    os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2,3"
+    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
 
     # Specify parameters before model is run.
     batch_size = 1000
