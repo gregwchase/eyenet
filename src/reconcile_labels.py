@@ -41,4 +41,4 @@ if __name__ == '__main__':
     print(trainLabels.shape)
 
     print("Writing CSV")
-    trainLabels.to_csv('../labels/trainLabels_master_256_no_nan.csv', index=False, header=True)
+    trainLabels.to_csv('../labels/trainLabels_master_256_v2.csv', index=False, header=True)

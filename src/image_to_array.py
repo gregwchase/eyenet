@@ -72,7 +72,7 @@ def save_to_array(arr_name, arr_object):
 if __name__ == '__main__':
     start_time = time.time()
 
-    labels = pd.read_csv("../labels/trainLabels_master_256.csv")
+    labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
 
     # labels.image = change_image_name(labels, 'image')
     # labels = list(labels.train_image_name)
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     print(X_train.shape)
 
     print("Saving Train Array")
-    save_to_array('../data/X_train_256.npy', X_train)
+    save_to_array('../data/X_train_256_v2.npy', X_train)
 
     # print("--- %s seconds ---" % (time.time() - start_time))
     #
