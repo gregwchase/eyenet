@@ -1,4 +1,6 @@
-# EyeNet - Treatment of Diabetic Retinopathy Using Deep Learning
+# EyeNet
+
+## Treatment of Diabetic Retinopathy Using Deep Learning
 
 ## Objective
 
@@ -37,16 +39,14 @@ The training data is comprised of 35,126 images, while the test data is 53,576 i
 The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
-<p align=“center”>
-<img height=“400" src=“https://github.com/gregwchase/dsi-capstone/blob/master/images/eda/Retinopathy_vs_Frequency_All.png“>
+<p align = "center">
+<img align="center" src="images/eda/Retinopathy_vs_Frequency_All.png" alt="EDA - Class Imbalance"/>
 </p>
-
-![EDA - Class Imbalance](images/eda/Retinopathy_vs_Frequency_All.png)
 
 Of the original training data, 25,810 images are classified as not having retinopathy,
 while 9,316 are classified as having retinopathy.
 
-Due to the class imbalance, steps were taken in preprocessing in order to rectify the imbalance, and when training the model.
+Due to the class imbalance, steps (shown below) were taken in preprocessing in order to rectify the imbalance, and when training the model.
 
 
 ## Preprocessing
@@ -79,6 +79,12 @@ images that had retinopathy were mirrored, and rotated 90, 120, 180, and 270
 degrees. Because of this, the class imbalance is rectified, with a few thousand
 more images having retinopathy.
 
+The first images show two pairs of eyes, along with the black borders. Notice in
+the cropping and rotations how the majority of noise is removed.
+
+![Unscaled Images](images/readme/sample_images_unscaled.jpg)
+![Rotated Images](images/readme/17_left_horizontal_white.jpg)
+
 
 ## Neural Network Architecture
 
@@ -86,14 +92,15 @@ The model is built using Keras, utilizing TensorFlow as the backend.
 TensorFlow was chosen as the backend due to better performance over
 Theano, and the ability to visualize the neural network using TensorBoard.
 
-The architecture for the network is the following:
+The architecture for the neural network is the following:
+
 * 3 Conv2D layers
 * 1 Pooling layer
 * 2 Dense layers, with the final layer being for classification
 
 ## Results
 The model was created to classify whether or not a patient has retinopathy.
-The best model performs with 82% accuracy on the training data, with 79%
+The best model performs with 82% accuracy on the training data, with 80%
 accuracy on the test and validation data.
 
 ## Next Steps
@@ -106,3 +113,14 @@ accuracy on the test and validation data.
 1. [What is Diabetic Retinopathy?](http://www.mayoclinic.org/diseases-conditions/diabetic-retinopathy/basics/definition/con-20023311)
 
 2. [Diabetic Retinopathy Winners' Interview: 4th place, Julian & Daniel](http://blog.kaggle.com/2015/08/14/diabetic-retinopathy-winners-interview-4th-place-julian-daniel/)
+
+
+## Tech Stack
+<p align = "center">
+<img align="center" src="images/tech_stack/aws_logo.svg" alt="AWS" style="width: 300px;"/>
+<img align="center" src="images/tech_stack/keras_logo.png" alt="Keras" style="width: 300px;"/>
+<img align="center" src="images/tech_stack/numpy_logo.jpg" alt="NumPy" style="width: 300px;"/>
+<img align="center" src="images/tech_stack/openCV_logo.png" alt="OpenCV" style="width: 250px;"/>
+<img align="center" src="images/tech_stack/skimage_logo.png" alt="SKImage" style="width: 300px;"/>
+<img align="center" src="images/tech_stack/tensorflow_logo.png" alt="TensorFlow" style="width: 300px;"/>
+</p>
