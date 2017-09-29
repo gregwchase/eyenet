@@ -11,6 +11,8 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD, Adadelta
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 import os
 
 np.random.seed(1337)
@@ -71,24 +73,46 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
-                padding='valid',
-                strides = 2,
-                input_shape = (img_rows, img_cols, channels)))
+        padding='valid',
+        strides=4,
+        input_shape=(img_rows, img_cols, channels)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+
+
+    kernel_size = (16,16)
+    model.add(Conv2D(16, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
     kernel_size = (8,8)
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(8, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
+    # kernel_size = (4,4)
+    # model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
+
+
+    # kernel_size = (2,2)
+    # model.add(Conv2D(2, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
+
+
     model.add(MaxPooling2D(pool_size=(2,2)))
+    # model.add(Dropout(0.20))
 
 
     model.add(Flatten())
     print("Model flattened out to: ", model.output_shape)
 
-    model.add(Dense(256))
+
+    model.add(Dense(128))
     model.add(Activation('relu'))
 
 
@@ -103,19 +127,19 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     stop = EarlyStopping(monitor='acc',
                             min_delta=0.001,
-                            patience=1,
+                            patience=2,
                             verbose=0,
                             mode='auto')
 
 
-    # tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
+    tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
 
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
                 validation_data=(X_test,y_test),
                 class_weight= 'auto',
-                callbacks=[stop])
+                callbacks=[stop, tensor_board])
 
     return model
 
@@ -129,7 +153,7 @@ if __name__ == '__main__':
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 5
-    nb_epoch = 20
+    nb_epoch = 100
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -183,9 +207,14 @@ if __name__ == '__main__':
     # print("Saving Model")
     # model.save('DR_All_Classes.h5')
 
+    print("Predicting")
+    predicted = model.predict(X_test)
 
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
+
+    print("Precision: ", precision_score(y_test, predicted))
+    print("Recall: ", recall_score(y_test, predicted))
 
     print("Completed")
