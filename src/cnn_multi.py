@@ -85,24 +85,24 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     kernel_size = (8,8)
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D8, (kernel_size[0], kernel_size[1])))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
-    # model.add(Dropout(0.50))
+
 
     kernel_size = (4,4)
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
-    # model.add(Dropout(0.20))
+
 
     kernel_size = (2,2)
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(2, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
     model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Dropout(0.25))
+
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(BatchNormalization())
     model.add(Dropout(0.20))
 
 
@@ -113,16 +113,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Dense(128))
     model.add(Activation('relu'))
 
-    # model.add(Dense(32))
-    # model.add(Activation('relu'))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-
-    # model.summary()
-
-    # ada_delta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
 
     model.compile(loss = 'categorical_crossentropy',
                     optimizer='adam',
@@ -139,7 +133,6 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
 
-    # cls_weights = class_weight.compute_class_weight('balanced', np.unique(y_train), y_train)
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
                 validation_data=(X_test,y_test),
