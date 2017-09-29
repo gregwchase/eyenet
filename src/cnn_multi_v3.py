@@ -82,6 +82,9 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+
     model.add(Flatten())
     print("Model flattened out to: ", model.output_shape)
 
@@ -112,7 +115,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                 verbose=1,
                 validation_data=(X_test,y_test),
                 class_weight= 'auto',
-                callbacks=[stop, tensor_board])
+                callbacks=[stop])
 
     return model
 

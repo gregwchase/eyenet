@@ -77,29 +77,30 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
-    model.add(Conv2D(16, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
+    model.add(Dropout(0.05))
 
     kernel_size = (8,8)
-    model.add(Conv2D(8, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     # model.add(Dropout(0.50))
 
     kernel_size = (4,4)
-    model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
-    # model.add(Dropout(0.20))
+    model.add(Dropout(0.10))
 
     kernel_size = (2,2)
-    model.add(Conv2D(2, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(BatchNormalization())
-    model.add(Dropout(0.20))
+    model.add(BatchNormalization())
+    # model.add(Dropout(0.20))
 
 
     model.add(Flatten())
@@ -113,10 +114,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-    sgd = SGD(lr=0.01, momentum=0.0, decay=0.0, nesterov=False)
+    # sgd = SGD(lr=0.01, momentum=0.0, decay=0.0, nesterov=False)
 
     model.compile(loss = 'categorical_crossentropy',
-                    optimizer=sgd,
+                    optimizer='adam',
                     metrics=['accuracy'])
 
 

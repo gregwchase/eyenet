@@ -85,25 +85,25 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     kernel_size = (8,8)
-    model.add(Conv2D8, (kernel_size[0], kernel_size[1])))
+    model.add(Conv2D(8, (kernel_size[0], kernel_size[1])))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
-    kernel_size = (4,4)
-    model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
-    model.add(BatchNormalization())
-    model.add(Activation('relu'))
+    # kernel_size = (4,4)
+    # model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
 
 
-    kernel_size = (2,2)
-    model.add(Conv2D(2, (kernel_size[0], kernel_size[1])))
-    model.add(BatchNormalization())
-    model.add(Activation('relu'))
+    # kernel_size = (2,2)
+    # model.add(Conv2D(2, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.20))
+    # model.add(Dropout(0.20))
 
 
     model.add(Flatten())
