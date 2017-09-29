@@ -78,6 +78,12 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
+    kernel_size = (16,16)
+    model.add(Conv2D(16, (kernel_size[0], kernel_size[1])))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+
+
     kernel_size = (8,8)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(BatchNormalization())
@@ -107,8 +113,8 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Dense(128))
     model.add(Activation('relu'))
 
-    # model.add(Dense(64))
-    # model.add(Activation('tanh'))
+    # model.add(Dense(32))
+    # model.add(Activation('relu'))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
@@ -158,7 +164,7 @@ if __name__ == '__main__':
     channels = 3
     nb_filters = 32
     # pool_size = (2,2)
-    kernel_size = (16,16)
+    kernel_size = (32,32)
 
     # Import data
     labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
