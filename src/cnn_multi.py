@@ -72,23 +72,25 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model = Sequential()
 
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
+    model.add(Conv2D(32, (kernel_size[0], kernel_size[1]),
         padding='valid',
         strides=4,
         input_shape=(img_rows, img_cols, channels)))
-    model.add(BatchNormalization())
+    # model.add(BatchNormalization())
     model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     kernel_size = (16,16)
-    model.add(Conv2D(16, (kernel_size[0], kernel_size[1])))
-    model.add(BatchNormalization())
+    model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
     model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     kernel_size = (8,8)
-    model.add(Conv2D(8, (kernel_size[0], kernel_size[1])))
-    model.add(BatchNormalization())
+    model.add(Conv2D(128, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
@@ -104,7 +106,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     # model.add(Activation('relu'))
 
 
-    model.add(MaxPooling2D(pool_size=(2,2)))
+    # model.add(MaxPooling2D(pool_size=(2,2)))
     # model.add(Dropout(0.20))
 
 
@@ -112,7 +114,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     print("Model flattened out to: ", model.output_shape)
 
 
-    model.add(Dense(128))
+    model.add(Dense(1024))
     model.add(Activation('relu'))
 
 
@@ -214,7 +216,7 @@ if __name__ == '__main__':
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    print("Precision: ", precision_score(y_test, predicted))
-    print("Recall: ", recall_score(y_test, predicted))
+    # print("Precision: ", precision_score(y_test, predicted))
+    # print("Recall: ", recall_score(y_test, predicted))
 
     print("Completed")
