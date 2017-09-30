@@ -72,7 +72,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model = Sequential()
 
 
-    model.add(Conv2D(32, (kernel_size[0], kernel_size[1]),
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
         padding='valid',
         strides=4,
         input_shape=(img_rows, img_cols, channels)))
@@ -88,16 +88,16 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(MaxPooling2D(pool_size=(2,2)))
 
 
-    kernel_size = (8,8)
+    # kernel_size = (8,8)
+    # model.add(Conv2D(128, (kernel_size[0], kernel_size[1])))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
+
+
+    kernel_size = (4,4)
     model.add(Conv2D(128, (kernel_size[0], kernel_size[1])))
     # model.add(BatchNormalization())
     model.add(Activation('relu'))
-
-
-    # kernel_size = (4,4)
-    # model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
-    # model.add(BatchNormalization())
-    # model.add(Activation('relu'))
 
 
     # kernel_size = (2,2)
@@ -114,7 +114,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     print("Model flattened out to: ", model.output_shape)
 
 
-    model.add(Dense(1024))
+    model.add(Dense(2048))
     model.add(Activation('relu'))
 
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 5
-    nb_epoch = 20
+    nb_epoch = 10
 
     img_rows, img_cols = 256, 256
     channels = 3
