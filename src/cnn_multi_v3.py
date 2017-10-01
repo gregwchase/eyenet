@@ -148,12 +148,17 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 if __name__ == '__main__':
 
     # Specify GPU's to Use
-    os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2,3"
+    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
 
     # Specify parameters before model is run.
     batch_size = 1000
+<<<<<<< HEAD
     nb_classes = 3
     nb_epoch = 100
+=======
+    nb_classes = 5
+    nb_epoch = 20
+>>>>>>> dbbe9ef228138afc0475bf73200279e2fd082521
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -207,7 +212,7 @@ if __name__ == '__main__':
 
 
     # print("Saving Model")
-    # model.save('DR_All_Classes.h5')
+    model.save('DR_All_Classes_100_epochs.h5')
 
     print("Predicting")
     predicted = model.predict(X_test)
@@ -216,7 +221,7 @@ if __name__ == '__main__':
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    print("Precision: ", precision_score(y_test, predicted))
-    print("Recall: ", recall_score(y_test, predicted))
+    # print("Precision: ", precision_score(y_test, predicted))
+    # print("Recall: ", recall_score(y_test, predicted))
 
     print("Completed")
