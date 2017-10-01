@@ -152,13 +152,12 @@ if __name__ == '__main__':
 
     # Specify parameters before model is run.
     batch_size = 1000
-<<<<<<< HEAD
+
     nb_classes = 3
-    nb_epoch = 100
-=======
-    nb_classes = 5
     nb_epoch = 20
->>>>>>> dbbe9ef228138afc0475bf73200279e2fd082521
+
+    nb_classes = 3
+    nb_epoch = 20
 
     img_rows, img_cols = 256, 256
     channels = 3
