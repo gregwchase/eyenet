@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
     # Specify parameters before model is run.
     batch_size = 1000
-    nb_classes = 5
+    nb_classes = 3
     nb_epoch = 100
 
     img_rows, img_cols = 256, 256
@@ -163,9 +163,11 @@ if __name__ == '__main__':
 
     # Import data
     labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
-    # labels['level'] = labels['level'].fillna(0)
     X = np.load("../data/X_train_256_v2.npy")
     # y = np.array([1 if l >= 1 else 0 for l in labels['level']])
+    labels.loc[labels.level == 2, 'level'] = 1
+    labels.loc[labels.level == 4, 'level'] = 3
+    labels.loc[labels.level == 3, 'level'] = 2
     y = np.array(labels['level'])
 
 
