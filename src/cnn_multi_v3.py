@@ -1,6 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Convolution2D, MaxPooling2D
+from keras.layers import Convolution2D, MaxPooling2D, AveragePooling2D
 from keras.layers.convolutional import Conv2D
 from keras.utils import np_utils
 from keras import backend as K
@@ -72,7 +72,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model = Sequential()
 
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
+    model.add(Conv2D(64, (kernel_size[0], kernel_size[1]),
         padding='valid',
         strides=4,
         input_shape=(img_rows, img_cols, channels)))
