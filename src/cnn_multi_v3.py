@@ -112,9 +112,13 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     print("Model flattened out to: ", model.output_shape)
 
 
-    model.add(Dense(128))
+    model.add(Dense(2048))
     model.add(Activation('relu'))
+    model.add(Dropout(0.20))
 
+    # model.add(Dense(1024))
+    # model.add(Activation('relu'))
+    # model.add(Dropout(0.20))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
@@ -154,10 +158,8 @@ if __name__ == '__main__':
     batch_size = 1000
 
     nb_classes = 3
-    nb_epoch = 20
+    nb_epoch = 5
 
-    nb_classes = 3
-    nb_epoch = 20
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -211,7 +213,7 @@ if __name__ == '__main__':
 
 
     # print("Saving Model")
-    model.save('DR_All_Classes_100_epochs.h5')
+    # model.save('DR_All_Classes_100_epochs.h5')
 
     print("Predicting")
     predicted = model.predict(X_test)
