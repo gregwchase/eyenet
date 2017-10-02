@@ -80,6 +80,12 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
+
+
+    # model.add(Conv2D(64, (4,4)))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
+
     model.add(MaxPooling2D(pool_size=(2,2)))
 
 
@@ -227,7 +233,7 @@ if __name__ == '__main__':
     # print("Saving Model")
     # model.save('DR_All_Classes_100_epochs.h5')
 
-    print("Predicting")
+    # print("Predicting")
     predicted = model.predict(X_test)
 
     score = model.evaluate(X_test, y_test, verbose=0)
