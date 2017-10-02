@@ -6,7 +6,7 @@
 
 Diabetic retinopathy is the leading cause of blindness in the working-age population of the developed world. It is estimated to affect over 93 million people.
 
-The need for a comprehensive and automated method of DR screening has long been recognized, and previous efforts have made good progress using image classification, pattern recognition, and machine learning. With photos of eyes as input, the goal of this capstone is to create a new model, ideally resulting in realistic clinical potential.
+The need for a comprehensive and automated method of diabetic retinopathy screening has long been recognized, and previous efforts have made good progress using image classification, pattern recognition, and machine learning. With photos of eyes as input, the goal of this capstone is to create a new model, ideally resulting in realistic clinical potential.
 
 The motivations for this project are twofold:
 
@@ -30,9 +30,9 @@ on a large scale data set.
 
 ## Data
 
-The data originates from a [2015 Kaggle competition](https://www.kaggle.com/c/diabetic-retinopathy-detection). However, this data isn't a typical Kaggle dataset. In most Kaggle competitions, the data has already been cleaned, giving the data scientist very little to preprocess. With this dataset, this isn't the case.
+The data originates from a [2015 Kaggle competition](https://www.kaggle.com/c/diabetic-retinopathy-detection). However, is an atypical Kaggle dataset. In most Kaggle competitions, the data has already been cleaned, giving the data scientist very little to preprocess. With this dataset, this isn't the case.
 
-All images are taken of different people, using different cameras, and of different sizes. Pertaining to the preprocessing section, this data is extremely noisy, and requires multiple preprocessing steps to get all images to a useable format for training a model.
+All images are taken of different people, using different cameras, and of different sizes. Pertaining to the [preprocessing](#preprocessing) section, this data is extremely noisy, and requires multiple preprocessing steps to get all images to a useable format for training a model.
 
 The training data is comprised of 35,126 images, which was augmented during preprocessing.
 
@@ -79,8 +79,7 @@ training data.
 ### Rotate and Mirror All Images
 All images were rotated and mirrored.Images without retinopathy were mirrored;
 images that had retinopathy were mirrored, and rotated 90, 120, 180, and 270
-degrees. Because of this, the class imbalance is rectified, with a few thousand
-more images having retinopathy.
+degrees.
 
 The first images show two pairs of eyes, along with the black borders. Notice in
 the cropping and rotations how the majority of noise is removed.
@@ -88,6 +87,12 @@ the cropping and rotations how the majority of noise is removed.
 ![Unscaled Images](images/readme/sample_images_unscaled.jpg)
 ![Rotated Images](images/readme/17_left_horizontal_white.jpg)
 
+After rotations and mirroring, the class imbalance is rectified, with a few thousand
+more images having retinopathy.
+
+<p align = "center">
+<img align="center" src="images/eda/Retinopathy_vs_Frequency_Binary_All.png" alt="EDA - Corrected Class Imbalance"/>
+</p>
 
 ## Neural Network Architecture
 
@@ -97,7 +102,7 @@ Theano, and the ability to visualize the neural network using TensorBoard.
 
 The architecture for the neural network is the following:
 
-* 3 Conv2D layers
+* 3 Convolution (2D) layers
 * 1 Pooling layer
 * 2 Dense layers, with the final layer being for classification
 
