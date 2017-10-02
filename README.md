@@ -16,6 +16,11 @@ on a large scale data set.
 * Time is lost between patients getting their eyes scanned, having them analyzed by doctors, and scheduling a follow-up appointment. By processing images in real-time, EyeNet would allow people to seek & schedule treatment the same day.
 
 
+<p align = "center">
+<img align="center" src="images/readme/dr_scan.gif" alt="Retinopathy Scan" height="169" width="300"/>
+</p>
+
+
 ## Table of Contents
 1. [Data](#data)
 2. [Exploratory Data Analysis](#exploratory-data-analysis)
