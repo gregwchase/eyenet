@@ -13,6 +13,7 @@ from keras.optimizers import SGD, Adadelta
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import recall_score
 from sklearn.metrics import precision_score
+# from imblearn.over_sampling import SMOTE
 import os
 
 np.random.seed(1337)
@@ -72,25 +73,33 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model = Sequential()
 
 
-    model.add(Conv2D(64, (kernel_size[0], kernel_size[1]),
+    model.add(Conv2D(64, (4,4),
         padding='valid',
         strides=4,
         input_shape=(img_rows, img_cols, channels)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
-    kernel_size = (16,16)
-    model.add(Conv2D(16, (kernel_size[0], kernel_size[1])))
+
+    # kernel_size = (16,16)
+    model.add(Conv2D(32, (4,4)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
 
-    kernel_size = (8,8)
-    model.add(Conv2D(8, (kernel_size[0], kernel_size[1])))
+    # kernel_size = (8,8)
+    model.add(Conv2D(32, (4, 4)))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
 
+
+
+
+    # model.add(Conv2D(64, (8,8), padding='valid'))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
 
     # kernel_size = (4,4)
     # model.add(Conv2D(4, (kernel_size[0], kernel_size[1])))
@@ -129,7 +138,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                     metrics=['accuracy'])
 
 
-    stop = EarlyStopping(monitor='acc',
+    stop = EarlyStopping(monitor='val_loss',
                             min_delta=0.001,
                             patience=2,
                             verbose=0,
@@ -158,7 +167,7 @@ if __name__ == '__main__':
     batch_size = 1000
 
     nb_classes = 3
-    nb_epoch = 5
+    nb_epoch = 10
 
 
     img_rows, img_cols = 256, 256
@@ -180,6 +189,9 @@ if __name__ == '__main__':
     print("Splitting data into test/ train datasets")
     X_train, X_test, y_train, y_test = split_data(X, y, 0.2)
 
+    # print("Applying SMOTE")
+    # sm = SMOTE()
+    # X_res, y_res = sm.fit_sample(X_train, y_train)
 
     print("Reshaping Data")
     X_train = reshape_data(X_train, img_rows, img_cols, channels)
