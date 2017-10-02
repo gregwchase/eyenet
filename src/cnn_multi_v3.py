@@ -88,6 +88,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
+    # model.add(Conv2D(64, (4,4)))
+    # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
+
     model.add(MaxPooling2D(pool_size=(2,2)))
     # model.add(Dropout(0.20))
 
