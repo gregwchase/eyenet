@@ -97,7 +97,7 @@ more images having retinopathy.
 
 
 <p align = "center">
-<img align="center" src="images/eda/DR_vs_Frequency_balanced.png" alt="EDA - Corrected Class Imbalance"/>
+<img align="center" src="images/eda/DR_vs_frequency_balanced.png" alt="EDA - Corrected Class Imbalance"/>
 </p>
 
 ## Neural Network Architecture
