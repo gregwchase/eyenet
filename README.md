@@ -131,6 +131,9 @@ is a framework designed by Apple for adding machine learning to iOS devices.
 This allows the ability of Python developers to export their models, convert the
 file to a `.mlmodel` file, and add the file to the iOS development cycle.
 
+Furthermore, the model is able to perform classification on the local
+device. There is no need for an internet connection for the application to work. Because of this, the ability to use EyeNet in remote areas is further justified, and that much easier.
+
 
 ## References
 
