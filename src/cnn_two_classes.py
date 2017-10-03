@@ -11,6 +11,8 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 import os
 
 np.random.seed(1337)
@@ -196,9 +198,18 @@ if __name__ == '__main__':
     # print("Saving Model")
     # model.save('DR_Two_Classes.h5')
 
+    print("Predicting")
+    predicted = model.predict(X_test)
 
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
+
+
+    predicted = [np.argmax(p) for p in predicted]
+    y_test = [np.argmax(y) for y in y_test]
+
+    print("Precision: ", precision_score(y_test, predicted))
+    print("Recall: ", recall_score(y_test, predicted))
 
     print("Completed")
