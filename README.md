@@ -17,7 +17,7 @@ on a large scale data set.
 
 
 <p align = "center">
-<img align="center" src="images/readme/dr_scan.gif" alt="Retinopathy Scan" height="169" width="300"/>
+<img align="center" src="images/readme/dr_scan.gif" alt="Retinopathy GIF"/>
 </p>
 
 
@@ -48,7 +48,7 @@ The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
 <p align = "center">
-<img align="center" src="images/eda/Retinopathy_vs_Frequency_All.png" alt="EDA - Class Imbalance"/>
+<img align="center" src="images/eda/DR_vs_Frequency_tableau.png" alt="EDA - Class Imbalance"/>
 </p>
 
 Of the original training data, 25,810 images are classified as not having retinopathy,
@@ -95,8 +95,9 @@ the cropping and rotations how the majority of noise is removed.
 After rotations and mirroring, the class imbalance is rectified, with a few thousand
 more images having retinopathy.
 
+
 <p align = "center">
-<img align="center" src="images/eda/Retinopathy_vs_Frequency_Binary_All.png" alt="EDA - Corrected Class Imbalance"/>
+<img align="center" src="images/eda/DR_vs_Frequency_balanced.png" alt="EDA - Corrected Class Imbalance"/>
 </p>
 
 ## Neural Network Architecture
@@ -119,8 +120,16 @@ The best model performs with 82% accuracy on the training data, and 80%
 accuracy on the test and validation data.
 
 ## Next Steps
-1. Program the neural network to retrain with new photos.
-2. Port the Keras model to CoreML, and deploy to an EyeNet iOS application.
+1. Program the neural network to retrain with new photos. This is a common practice,
+and only serves to optimize the model. Checks would be put in place to validate the
+images before being added to the classfier, in order to prevent low quality images
+from altering the classifier too drastically.
+
+
+2. Port the Keras model to CoreML, and deploy to an EyeNet iOS application. CoreML
+is a framework designed by Apple for adding machine learning to iOS devices.
+This allows the ability of Python developers to export their models, convert the
+file to a `.mlmodel` file, and add the file to the iOS development cycle.
 
 
 ## References
