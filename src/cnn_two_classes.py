@@ -138,9 +138,27 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     return model
 
 
+def save_model(model, score, model_name):
+    '''
+    Saves Keras model to an h5 file, based on precision_score
+
+    INPUT
+        model: Keras model object to be saved
+        score: Score to determine if model should be saved.
+        model_name: name of model to be saved
+    '''
+
+    if score >= 0.85:
+        print("Saving Model")
+        model.save("../models/" + model_name + "_" + str(round(score,4)) + ".h5")
+    else:
+        print("Model Score:", score)
+
 
 if __name__ == '__main__':
-    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
+
+    # Specify GPU's to Use
+    os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2,3"
 
     # Specify parameters before model is run.
     batch_size = 1000
@@ -195,9 +213,6 @@ if __name__ == '__main__':
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
 
-    # print("Saving Model")
-    # model.save('DR_Two_Classes.h5')
-
     print("Predicting")
     predicted = model.predict(X_test)
 
@@ -209,7 +224,14 @@ if __name__ == '__main__':
     predicted = [np.argmax(p) for p in predicted]
     y_test = [np.argmax(y) for y in y_test]
 
-    print("Precision: ", precision_score(y_test, predicted))
-    print("Recall: ", recall_score(y_test, predicted))
+
+    precision = precision_score(y_test, predicted)
+    recall = recall_score(y_test, predicted)
+
+    print("Precision: ", precision)
+    print("Recall: ", recall)
+
+    save_model(model, precision, "DR_Two_Classes")
+
 
     print("Completed")
