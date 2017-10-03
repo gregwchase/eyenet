@@ -152,7 +152,7 @@ def save_model(model, score, model_name):
         print("Saving Model")
         model.save("../models/" + model_name + "_" + str(round(score,4)) + ".h5")
     else:
-        print("Model Score:", score)
+        print("Model Not Saved.  Score: ", score)
 
 
 if __name__ == '__main__':
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     print("Precision: ", precision)
     print("Recall: ", recall)
 
-    save_model(model, precision, "DR_Two_Classes")
+    save_model(model=model, score=precision, model_name="DR_Two_Classes")
 
 
     print("Completed")
