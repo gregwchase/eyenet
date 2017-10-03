@@ -93,7 +93,8 @@ the cropping and rotations how the majority of noise is removed.
 ![Rotated Images](images/readme/17_left_horizontal_white.jpg)
 
 After rotations and mirroring, the class imbalance is rectified, with a few thousand
-more images having retinopathy.
+more images having retinopathy. In total, there are 106,386 images being processed
+by the neural network.
 
 
 <p align = "center">
@@ -115,9 +116,17 @@ The architecture for the neural network is the following:
 ![TensorBoard CNN](images/readme/tensorboard_baseline.png)
 
 ## Results
-The model was created to classify whether or not a patient has retinopathy.
-The best model performs with 82% accuracy on the training data, and 80%
-accuracy on the test and validation data.
+The EyeNet classifier was created to determine if a patient has retinopathy. The current model returns the following scores.
+
+
+| Metric | Value |
+| :-----: | :-----: |
+| Accuracy (Train) | 82% |
+| Accuracy (Test) | 80% |
+| Precision | 88% |
+| Recall | 70% |
+
+
 
 ## Next Steps
 1. Program the neural network to retrain with new photos. This is a common practice,
