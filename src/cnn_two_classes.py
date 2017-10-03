@@ -11,6 +11,7 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
+import os
 
 np.random.seed(1337)
 
@@ -106,7 +107,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('softmax'))
 
 
-    model.summary()
+    # model.summary()
 
 
     model.compile(loss = 'categorical_crossentropy',
@@ -127,8 +128,9 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
-                validation_data=(X_test,y_test),
-                # class_weight='auto',
+                validation_split=0.2,
+                # validation_data=(X_test,y_test),
+                class_weight='auto',
                 callbacks=[stop, tensor_board])
 
     return model
@@ -136,11 +138,12 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
 if __name__ == '__main__':
+    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
 
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 2
-    nb_epoch = 20
+    nb_epoch = 30
 
     img_rows, img_cols = 256, 256
     channels = 3
@@ -149,8 +152,8 @@ if __name__ == '__main__':
     kernel_size = (16,16)
 
     # Import data
-    labels = pd.read_csv("../labels/trainLabels_master_256.csv")
-    X = np.load("../data/X_train_256.npy")
+    labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
+    X = np.load("../data/X_train_256_v2.npy")
     y = np.array([1 if l >= 1 else 0 for l in labels['level']])
     # y = np.array(labels['level'])
 
@@ -190,8 +193,8 @@ if __name__ == '__main__':
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
 
-    print("Saving Model")
-    model.save('DR_Two_Classes.h5')
+    # print("Saving Model")
+    # model.save('DR_Two_Classes.h5')
 
 
     score = model.evaluate(X_test, y_test, verbose=0)
