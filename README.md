@@ -61,8 +61,8 @@ show class 0 (no retinopathy); the second two rows show class 4 (proliferative r
 
 
 <p align = "center">
-<img align="center" src="images/readme/NO_DR_white_border_1.png" alt="No DR 1"/>
-<img align="center" src="images/readme/NO_DR_white_border_2.png" alt="No DR 2"/>
+<img align="center" src="images/readme/No_DR_white_border_1.png" alt="No DR 1"/>
+<img align="center" src="images/readme/No_DR_white_border_2.png" alt="No DR 2"/>
 <br></br>
 <img align="center" src="images/readme/Proliferative_DR_white_border_1.png" alt="Proliferative DR 1"/>
 <img align="center" src="images/readme/Proliferative_DR_white_border_2.png" alt="Proliferative DR 2"/>
