@@ -90,7 +90,19 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.50))
+    # model.add(Dropout(0.50))
+
+    kernel_size = (16,16)
+    model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
+    # model.add(Dropout(0.2))
+
+
+    # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
+
+
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     model.add(Flatten())
@@ -98,8 +110,8 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(Dense(128))
-    model.add(Activation('tanh'))
-
+    model.add(Activation('sigmoid'))
+    model.add(Dropout(0.25))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
@@ -113,7 +125,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                     metrics=['accuracy'])
 
 
-    stop = EarlyStopping(monitor='acc',
+    stop = EarlyStopping(monitor='val_acc',
                             min_delta=0.001,
                             patience=2,
                             verbose=0,
@@ -165,7 +177,7 @@ if __name__ == '__main__':
     channels = 3
     nb_filters = 32
     # pool_size = (2,2)
-    kernel_size = (16,16)
+    kernel_size = (8,8)
 
     # Import data
     labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
@@ -227,7 +239,7 @@ if __name__ == '__main__':
     print("Precision: ", precision)
     print("Recall: ", recall)
 
-    # save_model(model=model, score=precision, model_name="DR_Two_Classes")
+    save_model(model=model, score=precision, model_name="DR_Two_Classes")
 
 
     print("Completed")
