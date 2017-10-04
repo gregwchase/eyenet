@@ -4,7 +4,7 @@
 
 ## Objective
 
-Diabetic retinopathy is the leading cause of blindness in the working-age population of the developed world. It is estimated to affect over 93 million people.
+Diabetic retinopathy is the leading cause of blindness in the working-age population of the developed world. The condition is estimated to affect over 93 million people.
 
 The need for a comprehensive and automated method of diabetic retinopathy screening has long been recognized, and previous efforts have made good progress using image classification, pattern recognition, and machine learning. With photos of eyes as input, the goal of this capstone is to create a new model, ideally resulting in realistic clinical potential.
 
@@ -13,7 +13,7 @@ The motivations for this project are twofold:
 * Image classification has been a personal interest for years, in addition to classification
 on a large scale data set.
 
-* Time is lost between patients getting their eyes scanned, having them analyzed by doctors, and scheduling a follow-up appointment. By processing images in real-time, EyeNet would allow people to seek & schedule treatment the same day.
+* Time is lost between patients getting their eyes scanned (shown below), having their images analyzed by doctors, and scheduling a follow-up appointment. By processing images in real-time, EyeNet would allow people to seek & schedule treatment the same day.
 
 
 <p align = "center">
@@ -39,7 +39,7 @@ The data originates from a [2015 Kaggle competition](https://www.kaggle.com/c/di
 
 All images are taken of different people, using different cameras, and of different sizes. Pertaining to the [preprocessing](#preprocessing) section, this data is extremely noisy, and requires multiple preprocessing steps to get all images to a useable format for training a model.
 
-The training data is comprised of 35,126 images, which was augmented during preprocessing.
+The training data is comprised of 35,126 images, which are augmented during preprocessing.
 
 
 ## Exploratory Data Analysis
@@ -54,7 +54,20 @@ five categories to predict against, the plot below shows the severe class imbala
 Of the original training data, 25,810 images are classified as not having retinopathy,
 while 9,316 are classified as having retinopathy.
 
-Due to the class imbalance, steps (shown below) were taken in preprocessing in order to rectify the imbalance, and when training the model.
+Due to the class imbalance, steps taken during [preprocessing](#preprocessing) in order to rectify the imbalance, and when training the model.
+
+Furthermore, the variance between images of the eyes is extremely high. The first two rows of images
+show class 0 (no retinopathy); the second two rows show class 4 (proliferative retinopathy).
+
+
+<p align = "center">
+<img align="center" src="images/readme/NO_DR_white_border_1.png" alt="No DR 1"/>
+<img align="center" src="images/readme/NO_DR_white_border_2.png" alt="No DR 2"/>
+<br></br>
+<img align="center" src="images/readme/Proliferative_DR_white_border_1.png" alt="Proliferative DR 1"/>
+<img align="center" src="images/readme/Proliferative_DR_white_border_2.png" alt="Proliferative DR 2"/>
+</p>
+
 
 
 ## Preprocessing
@@ -74,7 +87,7 @@ the original dataset totals 35 gigabytes.
 
 ### Crop and Resize All Images
 All images were scaled down to 256 by 256. Despite taking longer to train, the
-detail present in photos of this size were much greater then at 128 by 128.
+detail present in photos of this size is much greater then at 128 by 128.
 
 Additionally, 403 images were dropped from the training set. Scikit-Image raised
 multiple warnings during resizing, due to these images having no color space.
@@ -127,11 +140,15 @@ The EyeNet classifier was created to determine if a patient has retinopathy. The
 | Recall | 70% |
 
 
+So, why does the neural network perform this way? Besides the class imbalance,
+the cropping is definitely helping in the network's performance. By not having
+extra black parts in the images, the network is able to process only the eye
+itself.
 
 ## Next Steps
 1. Program the neural network to retrain with new photos. This is a common practice,
 and only serves to optimize the model. Checks would be put in place to validate the
-images before being added to the classfier, in order to prevent low quality images
+images before being added to the classifier, in order to prevent low quality images
 from altering the classifier too drastically.
 
 
