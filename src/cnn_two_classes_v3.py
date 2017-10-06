@@ -141,27 +141,27 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                 validation_split=0.2,
                 # validation_data=(X_test,y_test),
                 class_weight='auto',
-                metrics=[recall_threshold(threshold=0.3)],
+                # metrics=[recall_threshold(threshold=0.3)],
                 callbacks=[stop, tensor_board])
 
     return model
 
 
-def recall_threshold(threshold):
-    def recall(y_true, y_pred):
-        """Recall metric.
-        Computes the recall over the whole batch using threshold_value.
-        """
-        threshold_value = threshold
-        # Adaptation of the "round()" used before to get the predictions. Clipping to make sure that the predicted raw values are between 0 and 1.
-        y_pred = K.cast(K.greater(K.clip(y_pred, 0, 1), threshold_value), K.floatx())
-        # Compute the number of true positives. Rounding in prevention to make sure we have an integer.
-        true_positives = K.round(K.sum(K.clip(y_true * y_pred, 0, 1)))
-        # Compute the number of positive targets.
-        possible_positives = K.sum(K.clip(y_true, 0, 1))
-        recall_ratio = true_positives / (possible_positives + K.epsilon())
-        return recall_ratio
-    return recall
+# def recall_threshold(threshold):
+#     def recall(y_true, y_pred):
+#         """Recall metric.
+#         Computes the recall over the whole batch using threshold_value.
+#         """
+#         threshold_value = threshold
+#         # Adaptation of the "round()" used before to get the predictions. Clipping to make sure that the predicted raw values are between 0 and 1.
+#         y_pred = K.cast(K.greater(K.clip(y_pred, 0, 1), threshold_value), K.floatx())
+#         # Compute the number of true positives. Rounding in prevention to make sure we have an integer.
+#         true_positives = K.round(K.sum(K.clip(y_true * y_pred, 0, 1)))
+#         # Compute the number of positive targets.
+#         possible_positives = K.sum(K.clip(y_true, 0, 1))
+#         recall_ratio = true_positives / (possible_positives + K.epsilon())
+#         return recall_ratio
+#     return recall
 
 
 def save_model(model, score, model_name):
