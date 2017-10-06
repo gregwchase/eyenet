@@ -141,7 +141,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                 validation_split=0.2,
                 # validation_data=(X_test,y_test),
                 class_weight='auto',
-                metrics=[recall_threshold(threshold=0.3)]
+                metrics=[recall_threshold(threshold=0.3)],
                 callbacks=[stop, tensor_board])
 
     return model
