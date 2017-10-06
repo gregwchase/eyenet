@@ -92,9 +92,9 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(MaxPooling2D(pool_size=(2,2)))
     # model.add(Dropout(0.50))
 
-    kernel_size = (16,16)
-    model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    # kernel_size = (16,16)
+    # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
     # model.add(Dropout(0.2))
 
 
@@ -102,7 +102,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     # model.add(Activation('relu'))
 
 
-    model.add(MaxPooling2D(pool_size=(2,2)))
+    # model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     model.add(Flatten())
@@ -156,9 +156,9 @@ def save_model(model, score, model_name):
         model_name: name of model to be saved
     '''
 
-    if score >= 0.85:
+    if score >= 0.75:
         print("Saving Model")
-        model.save("../models/" + model_name + "_" + str(round(score,4)) + ".h5")
+        model.save("../models/" + model_name + "_recall_" + str(round(score,4)) + ".h5")
     else:
         print("Model Not Saved.  Score: ", score)
 
@@ -239,7 +239,7 @@ if __name__ == '__main__':
     print("Precision: ", precision)
     print("Recall: ", recall)
 
-    save_model(model=model, score=precision, model_name="DR_Two_Classes")
+    save_model(model=model, score=recall, model_name="DR_Two_Classes")
 
 
     print("Completed")
