@@ -126,7 +126,8 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
-                validation_data=(X_test,y_test),
+                validation_split=0.2,
+                # validation_data=(X_test,y_test),
                 class_weight= 'auto',
                 callbacks=[stop, tensor_board])
 
@@ -143,7 +144,7 @@ if __name__ == '__main__':
     batch_size = 1000
 
     nb_classes = 3
-    nb_epoch = 10
+    nb_epoch = 20
 
 
     img_rows, img_cols = 256, 256

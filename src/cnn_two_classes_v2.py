@@ -75,22 +75,36 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     kernel_size = (4,4)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
-        padding='valid',
+        padding='same',
         strides=1,
         input_shape=(img_rows, img_cols, channels)))
     model.add(Activation('relu'))
 
-
+    kernel_size=(4,4)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
-
+    kernel_size=(4,4)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.50))
+    # model.add(Dropout(0.50))
+
+    kernel_size=(8,8)
+    model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
+
+
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    kernel_size = (12,12)
+    model.add(Conv2D(128, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
+
+
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     model.add(Flatten())
@@ -113,7 +127,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                     metrics=['accuracy'])
 
 
-    stop = EarlyStopping(monitor='acc',
+    stop = EarlyStopping(monitor='val_acc',
                             min_delta=0.001,
                             patience=2,
                             verbose=0,
@@ -156,7 +170,7 @@ if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
 
     # Specify parameters before model is run.
-    batch_size = 1000
+    batch_size = 100
     nb_classes = 2
     nb_epoch = 20
 
