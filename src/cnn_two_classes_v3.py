@@ -79,27 +79,21 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
-    # kernel_size = (8,8)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
-    # kernel_size = (2,2)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    # model.add(Dropout(0.50))
+
 
     # kernel_size = (16,16)
     # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
     # model.add(Activation('relu'))
     # model.add(Dropout(0.2))
-
-
-    # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
-    # model.add(Activation('relu'))
 
 
     # model.add(MaxPooling2D(pool_size=(2,2)))
@@ -117,9 +111,6 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('softmax'))
 
 
-    # model.summary()
-
-
     model.compile(loss = 'categorical_crossentropy',
                     optimizer='adam',
                     metrics=['accuracy'])
@@ -135,33 +126,13 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
 
-
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
                 validation_split=0.2,
-                # validation_data=(X_test,y_test),
                 class_weight='auto',
-                # metrics=[recall_threshold(threshold=0.3)],
                 callbacks=[stop, tensor_board])
 
     return model
-
-
-# def recall_threshold(threshold):
-#     def recall(y_true, y_pred):
-#         """Recall metric.
-#         Computes the recall over the whole batch using threshold_value.
-#         """
-#         threshold_value = threshold
-#         # Adaptation of the "round()" used before to get the predictions. Clipping to make sure that the predicted raw values are between 0 and 1.
-#         y_pred = K.cast(K.greater(K.clip(y_pred, 0, 1), threshold_value), K.floatx())
-#         # Compute the number of true positives. Rounding in prevention to make sure we have an integer.
-#         true_positives = K.round(K.sum(K.clip(y_true * y_pred, 0, 1)))
-#         # Compute the number of positive targets.
-#         possible_positives = K.sum(K.clip(y_true, 0, 1))
-#         recall_ratio = true_positives / (possible_positives + K.epsilon())
-#         return recall_ratio
-#     return recall
 
 
 def save_model(model, score, model_name):
@@ -194,7 +165,6 @@ if __name__ == '__main__':
     img_rows, img_cols = 256, 256
     channels = 3
     nb_filters = 32
-    # pool_size = (2,2)
     kernel_size = (8,8)
 
     # Import data
@@ -242,6 +212,7 @@ if __name__ == '__main__':
     print("Predicting")
     y_pred = model.predict(X_test)
 
+
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
@@ -254,8 +225,10 @@ if __name__ == '__main__':
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
 
+
     print("Precision: ", precision)
     print("Recall: ", recall)
+
 
     save_model(model=model, score=recall, model_name="DR_Two_Classes")
 
