@@ -48,7 +48,7 @@ The very first item analyzed was the training labels. While there are
 five categories to predict against, the plot below shows the severe class imbalance in the original dataset.
 
 <p align = "center">
-<img align="center" src="images/eda/DR_vs_Frequency_tableau.png" alt="EDA - Class Imbalance" height="305" width="442" />
+<img align="center" src="images/eda/DR_vs_Frequency_tableau.png" alt="EDA - Class Imbalance" height="458" width="736" />
 </p>
 
 Of the original training data, 25,810 images are classified as not having retinopathy,
@@ -111,7 +111,7 @@ by the neural network.
 
 
 <p align = "center">
-<img align="center" src="images/eda/DR_vs_frequency_balanced.png" alt="EDA - Corrected Class Imbalance" width="490" height="305" />
+<img align="center" src="images/eda/DR_vs_frequency_balanced.png" alt="EDA - Corrected Class Imbalance" width="664" height="458" />
 </p>
 
 ## Neural Network Architecture
