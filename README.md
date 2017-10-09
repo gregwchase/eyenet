@@ -1,6 +1,6 @@
 # EyeNet
 
-## Treatment of Diabetic Retinopathy Using Deep Learning
+## Detecting Diabetic Retinopathy With Deep Learning
 
 ## Objective
 
@@ -137,7 +137,7 @@ The EyeNet classifier was created to determine if a patient has retinopathy. The
 | Accuracy (Train) | 82% |
 | Accuracy (Test) | 80% |
 | Precision | 88% |
-| Recall | 70% |
+| Recall | 77% |
 
 
 So, why does the neural network perform this way? Besides the class imbalance,
