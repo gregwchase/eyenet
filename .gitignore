@@ -1,8 +1,12 @@
 /data
 /eyenet_web_app
+/images/other_images
 /models
 /notebooks
 /proposals
+/tf-graphs
+*.DS_Store
 *.ipynb
 *.xlsx
 *.docx
+*.twb
