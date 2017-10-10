@@ -120,13 +120,14 @@ The model is built using Keras, utilizing TensorFlow as the backend.
 TensorFlow was chosen as the backend due to better performance over
 Theano, and the ability to visualize the neural network using TensorBoard.
 
-The architecture for the neural network is the following:
+For predicting two categories, EyeNet utilizes three convolutional layers,
+each having a depth of 32. A Max Pooling layer is applied after all three
+convolutional layers with size (2,2).
 
-* 3 Convolution (2D) layers
-* 1 Pooling layer
-* 2 Dense layers, with the final layer being for classification
+After pooling, the data is fed through a single dense layer of size 128,
+and finally to the output layer, consisting of 2 softmax nodes.
 
-![TensorBoard CNN](images/readme/tensorboard_baseline.png)
+![TensorBoard CNN](images/readme/cnn_two_classes_tensorboard.png)
 
 ## Results
 The EyeNet classifier was created to determine if a patient has retinopathy. The current model returns the following scores.

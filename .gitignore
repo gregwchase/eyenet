@@ -4,7 +4,7 @@
 /models
 /notebooks
 /proposals
-/tf-graphs
+/tf_graphs
 *.DS_Store
 *.ipynb
 *.xlsx
