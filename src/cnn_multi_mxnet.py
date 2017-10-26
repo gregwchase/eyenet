@@ -105,7 +105,8 @@ if __name__ == '__main__':
 
 
     # create a trainable module on GPU 0
-    lenet_model = mx.mod.Module(symbol=lenet, context=mx.cpu())
+    # lenet_model = mx.mod.Module(symbol=lenet, context=mx.cpu())
+    lenet_model = mx.mod.Module(symbol=lenet, context=mx.gpu())
     # train with the same
     print("Training")
     lenet_model.fit(train,
