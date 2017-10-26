@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     # labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv", nrows = 60)
     labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
-    X = np.load("../data/X_sample.npy")
+    X = np.load("../data/X_train_256_v2.npy")
     y = np.array(labels['level'])
 
 
@@ -77,8 +77,14 @@ if __name__ == '__main__':
     print(X_train.shape)
     print(X_test.shape)
 
+
+    # Reshape y arrays
+    y_train = y_train.reshape(-1,1)
+    y_test = y_test.reshape(-1,1)
+
+
     print("Importing To MXNet")
-    batch_size = 5
+    # batch_size = 100
     train = mx.io.NDArrayIter(X_train, y_train, batch_size, shuffle=True)
     test = mx.io.NDArrayIter(X_test, y_test, batch_size)
 
