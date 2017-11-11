@@ -71,7 +71,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
                      padding='valid',
-                     strides=4,
+                     strides=1,
                      input_shape=(img_rows, img_cols, channels)))
     model.add(Activation('relu'))
 
