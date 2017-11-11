@@ -11,7 +11,10 @@ import numpy as np
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 import os
+
 np.random.seed(1337)
 
 
@@ -76,22 +79,24 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Activation('relu'))
 
 
-    kernel_size = (8,8)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
-    # kernel_size = (4,4)
-    # model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    # model.add(Activation('relu'))
-
-    kernel_size = (2,2)
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
     model.add(Activation('relu'))
 
 
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.50))
+
+
+    # kernel_size = (16,16)
+    # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    # model.add(Activation('relu'))
+    # model.add(Dropout(0.2))
+
+
+    # model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     model.add(Flatten())
@@ -99,14 +104,11 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
 
     model.add(Dense(128))
-    model.add(Activation('tanh'))
-
+    model.add(Activation('sigmoid'))
+    model.add(Dropout(0.25))
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
-
-
-    model.summary()
 
 
     model.compile(loss = 'categorical_crossentropy',
@@ -114,7 +116,7 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
                     metrics=['accuracy'])
 
 
-    stop = EarlyStopping(monitor='acc',
+    stop = EarlyStopping(monitor='val_acc',
                             min_delta=0.001,
                             patience=2,
                             verbose=0,
@@ -124,35 +126,50 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     tensor_board = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
 
 
-
     model.fit(X_train,y_train, batch_size=batch_size, epochs=nb_epoch,
                 verbose=1,
-                validation_data=(X_test,y_test),
-                # class_weight='auto',
+                validation_split=0.2,
+                class_weight='auto',
                 callbacks=[stop, tensor_board])
 
     return model
 
 
+def save_model(model, score, model_name):
+    '''
+    Saves Keras model to an h5 file, based on precision_score
+
+    INPUT
+        model: Keras model object to be saved
+        score: Score to determine if model should be saved.
+        model_name: name of model to be saved
+    '''
+
+    if score >= 0.75:
+        print("Saving Model")
+        model.save("../models/" + model_name + "_recall_" + str(round(score,4)) + ".h5")
+    else:
+        print("Model Not Saved.  Score: ", score)
+
 
 if __name__ == '__main__':
 
-    # Specify GPU's
-    os.environ["CUDA_VISIBLE_DEVICES"]="4,5,6,7"
+    # Specify GPU's to Use
+    os.environ["CUDA_VISIBLE_DEVICES"]="0,1,2,3"
+
     # Specify parameters before model is run.
     batch_size = 1000
     nb_classes = 2
-    nb_epoch = 20
+    nb_epoch = 30
 
     img_rows, img_cols = 256, 256
     channels = 3
     nb_filters = 32
-    # pool_size = (2,2)
-    kernel_size = (16,16)
+    kernel_size = (8,8)
 
     # Import data
-    labels = pd.read_csv("../labels/trainLabels_master_256.csv")
-    X = np.load("../data/X_train_256.npy")
+    labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
+    X = np.load("../data/X_train_256_v2.npy")
     y = np.array([1 if l >= 1 else 0 for l in labels['level']])
     # y = np.array(labels['level'])
 
@@ -192,12 +209,28 @@ if __name__ == '__main__':
     model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes)
 
 
-    print("Saving Model")
-    model.save('DR_Two_Classes.h5')
+    print("Predicting")
+    y_pred = model.predict(X_test)
 
 
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
+
+
+    y_pred = [np.argmax(y) for y in y_pred]
+    y_test = [np.argmax(y) for y in y_test]
+
+
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+
+
+    print("Precision: ", precision)
+    print("Recall: ", recall)
+
+
+    save_model(model=model, score=recall, model_name="DR_Two_Classes")
+
 
     print("Completed")
