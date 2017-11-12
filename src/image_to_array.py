@@ -1,12 +1,9 @@
 import cv2
 import numpy as np
 import pandas as pd
-import os
-import sys
-from PIL import Image
-from PIL import ImageFile
 import time
-
+import PIL
+from PIL import Image
 
 def change_image_name(df, column):
     '''
@@ -41,23 +38,6 @@ def convert_images_to_arrays_train(file_path, df):
     return np.array([np.array(Image.open(file_path + img)) for img in lst_imgs])
 
 
-def convert_images_to_arrays_test(file_path, lst_imgs):
-    '''
-    Converts each image to an array, and appends each array to a new NumPy
-    array, based on the image column equaling the image file name.
-
-    INPUT
-        file_path: Specified file path for resized test and train images.
-        lst_imgs: list of images to be read and converted to NumPy arrays.
-    OUTPUT
-        NumPy array of image arrays.
-    '''
-
-    # lst_imgs = [f for f in os.listdir(file_path) if f != '.DS_Store']
-
-    return np.array([np.array(Image.open(file_path + img)) for img in lst_imgs])
-
-
 def save_to_array(arr_name, arr_object):
     '''
     Saves data object as a NumPy file. Used for saving train and test arrays.
@@ -66,18 +46,17 @@ def save_to_array(arr_name, arr_object):
         arr_name: The name of the file you want to save.
             This input takes a directory string.
         arr_object: NumPy array of arrays. This object is saved as a NumPy file.
+
+    OUTPUT
+        NumPy array of image arrays
     '''
     return np.save(arr_name, arr_object)
+
 
 if __name__ == '__main__':
     start_time = time.time()
 
     labels = pd.read_csv("../labels/trainLabels_master_256_v2.csv")
-
-    # labels.image = change_image_name(labels, 'image')
-    # labels = list(labels.train_image_name)
-
-    # labels_sample = labels.head(10)
 
     print("Writing Train Array")
     X_train = convert_images_to_arrays_train('../data/train-resized-256/', labels)
@@ -85,17 +64,6 @@ if __name__ == '__main__':
     print(X_train.shape)
 
     print("Saving Train Array")
-    save_to_array('../data/X_train_256_v2.npy', X_train)
-
-    # print("--- %s seconds ---" % (time.time() - start_time))
-    #
-    #
-    # print("Writing Test Array")
-    # X_test = convert_images_to_arrays_test('../data/test-resized/')
-    #
-    # print(X_test.shape)
-    #
-    # print("Saving Test Array")
-    # save_to_array('../data/X_test.npy', X_test)
+    save_to_array('../data/X_train.npy', X_train)
 
     print("--- %s seconds ---" % (time.time() - start_time))
