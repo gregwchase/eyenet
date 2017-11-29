@@ -102,15 +102,15 @@ class EyeNet:
 
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation = "relu"))
 
-        self.model.add(MaxPooling2D(pool_size=(2, 2)))
+        self.model.add(MaxPooling2D(pool_size=(8,8)))
 
         self.model.add(Flatten())
         print("Model flattened out to: ", self.model.output_shape)
 
-        self.model.add(Dense(4096, activation="relu"))
+        self.model.add(Dense(2048, activation="relu"))
         self.model.add(Dropout(0.25))
 
-        self.model.add(Dense(4096, activation="relu"))
+        self.model.add(Dense(2048, activation="relu"))
         self.model.add(Dropout(0.25))
 
         self.model.add(Dense(self.nb_classes, activation="softmax"))

@@ -91,13 +91,13 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(MaxPooling2D(pool_size=(2,2)))
 
 
-    # kernel_size = (16,16)
-    # model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
-    # model.add(Activation('relu'))
+    kernel_size = (16,16)
+    model.add(Conv2D(64, (kernel_size[0], kernel_size[1])))
+    model.add(Activation('relu'))
     # model.add(Dropout(0.2))
 
 
-    # model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(MaxPooling2D(pool_size=(2,2)))
 
 
     model.add(Flatten())
@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
     # Specify parameters before model is run.
     batch_size = 1000
-    nb_classes = 2
+    nb_classes = 5
     nb_epoch = 30
 
     img_rows, img_cols = 256, 256
@@ -227,8 +227,8 @@ if __name__ == '__main__':
     y_test = [np.argmax(y) for y in y_test]
 
 
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
 
 
     print("Precision: ", precision)
