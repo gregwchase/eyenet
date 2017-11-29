@@ -9,6 +9,7 @@ from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
 from keras.utils import np_utils
+from keras.utils import multi_gpu_model
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
@@ -115,6 +116,9 @@ class EyeNet:
 
         self.model.add(Dense(self.nb_classes, activation="softmax"))
 
+
+        self.model = multi_gpu_model(self.model, gpus=8)
+
         self.model.compile(loss="categorical_crossentropy",
                         optimizer="adam",
                         metrics=["accuracy"])
@@ -177,6 +181,6 @@ if __name__ == '__main__':
     cnn = EyeNet()
     cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X = "../data/X_train_256_v2.npy")
     cnn.reshape_data(img_rows=256, img_cols=256, channels=3, nb_classes=5)
-    model = cnn.cnn_model(nb_filters=32, kernel_size=(4,4), batch_size=500, nb_epoch=50)
+    model = cnn.cnn_model(nb_filters=32, kernel_size=(4,4), batch_size=512, nb_epoch=50)
     precision, recall, f1 = cnn.predict(model)
     cnn.save_model(score = recall, model_name = "DR_Class")
