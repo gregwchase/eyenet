@@ -175,8 +175,8 @@ class EyeNet:
 
 if __name__ == '__main__':
     cnn = EyeNet()
-    cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X = "../data/X_sample.npy")
+    cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X = "../data/X_train_256_v2.npy")
     cnn.reshape_data(img_rows=256, img_cols=256, channels=3, nb_classes=5)
-    model = cnn.cnn_model(nb_filters=32, kernel_size=(4,4), batch_size=10, nb_epoch=1)
+    model = cnn.cnn_model(nb_filters=32, kernel_size=(4,4), batch_size=500, nb_epoch=50)
     precision, recall, f1 = cnn.predict(model)
     cnn.save_model(score = recall, model_name = "DR_Class")
