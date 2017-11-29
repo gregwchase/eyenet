@@ -40,8 +40,8 @@ class EyeNet:
         OUPUT
             Four arrays: X_train, X_test, y_train, and y_test
         """
-        labels = pd.read_csv(y_file_path, nrows=60)
-        # labels = pd.read_csv(y_file_path)
+        # labels = pd.read_csv(y_file_path, nrows=60)
+        labels = pd.read_csv(y_file_path)
         self.X = np.load(X)
         self.y = np.array(labels['level'])
         self.weights = class_weight.compute_class_weight('balanced', np.unique(self.y), self.y)
@@ -101,7 +101,6 @@ class EyeNet:
         self.model.add(Activation('relu'))
 
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation = "relu"))
-        # self.model.add(Activation('relu'))
 
         self.model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -148,7 +147,7 @@ class EyeNet:
         predictions = self.model.predict(self.X_test)
         predictions = np.argmax(predictions, axis=1)
 
-        predictions[predictions >=1] = 1 # Remove when non binary classifier
+        # predictions[predictions >=1] = 1 # Remove when non binary classifier
 
         self.y_test = np.argmax(self.y_test, axis=1)
 
