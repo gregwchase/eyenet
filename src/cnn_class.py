@@ -155,9 +155,9 @@ class EyeNet:
 
         self.y_test = np.argmax(self.y_test, axis=1)
 
-        precision = precision_score(self.y_test, predictions)
-        recall = recall_score(self.y_test, predictions)
-        f1 = f1_score(self.y_test, predictions)
+        precision = precision_score(self.y_test, predictions, average="micro")
+        recall = recall_score(self.y_test, predictions, average="micro")
+        f1 = f1_score(self.y_test, predictions, average="micro")
         return precision, recall, f1
 
     def save_model(self, score, model_name):
