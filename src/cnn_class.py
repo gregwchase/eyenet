@@ -20,6 +20,13 @@ class EyeNet:
     def __init__(self):
         self.X = None
         self.y = None
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
+        self.test_data_size = None
+        self.weights = None
+        self.model = None
         self.nb_classes = None
         self.img_rows = 256
         self.img_cols = 256
