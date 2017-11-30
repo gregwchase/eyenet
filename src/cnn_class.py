@@ -85,7 +85,7 @@ class EyeNet:
         print("y_train Shape: ", self.y_train.shape)
         print("y_test Shape: ", self.y_test.shape)
 
-    def cnn_model(self, nb_filters=32, kernel_size=(4, 4), batch_size=10, nb_epoch=2):
+    def cnn_model(self, nb_filters=32, kernel_size=(2,2), batch_size=10, nb_epoch=2):
         """
         Define and run the convolutional neural network
 
