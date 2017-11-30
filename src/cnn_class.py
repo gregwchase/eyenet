@@ -1,9 +1,6 @@
-import os
-
 import numpy as np
 import pandas as pd
 from keras.callbacks import EarlyStopping
-from keras.callbacks import TensorBoard
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
@@ -19,7 +16,6 @@ from sklearn.utils import class_weight
 np.random.seed(1337)
 
 
-
 class EyeNet:
     def __init__(self):
         self.X = None
@@ -31,14 +27,14 @@ class EyeNet:
 
     def split_data(self, y_file_path, X, test_data_size=0.2):
         """
-        Split data into test and training datasets.
+        Split data into test and training data sets.
 
         INPUT
             y_file_path: path to CSV containing labels
             X: NumPy array of arrays
             test_data_size: size of test/train split. Value from 0 to 1
 
-        OUPUT
+        OUTPUT
             Four arrays: X_train, X_test, y_train, and y_test
         """
         # labels = pd.read_csv(y_file_path, nrows=60)
@@ -47,8 +43,9 @@ class EyeNet:
         self.y = np.array(labels['level'])
         self.weights = class_weight.compute_class_weight('balanced', np.unique(self.y), self.y)
         self.test_data_size = test_data_size
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X,self.y,
-                                        test_size=self.test_data_size, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y,
+                                                                                test_size=self.test_data_size,
+                                                                                random_state=42)
 
     def reshape_data(self, img_rows, img_cols, channels, nb_classes):
         """
@@ -70,21 +67,18 @@ class EyeNet:
 
         self.y_train = np_utils.to_categorical(self.y_train, self.nb_classes)
 
-
         self.X_test = self.X_test.reshape(self.X_test.shape[0], img_rows, img_cols, channels)
         self.X_test = self.X_test.astype("float32")
         self.X_test /= 255
 
         self.y_test = np_utils.to_categorical(self.y_test, self.nb_classes)
 
-
         print("X_train Shape: ", self.X_train.shape)
         print("X_test Shape: ", self.X_test.shape)
         print("y_train Shape: ", self.y_train.shape)
         print("y_test Shape: ", self.y_test.shape)
 
-
-    def cnn_model(self, nb_filters=32, kernel_size=(4,4), batch_size=10, nb_epoch=2):
+    def cnn_model(self, nb_filters=32, kernel_size=(4, 4), batch_size=10, nb_epoch=2):
         """
         Define and run the convolutional neural network
 
@@ -93,17 +87,17 @@ class EyeNet:
 
         self.model = Sequential()
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
-                        padding="valid",
-                        strides=1,
-                        input_shape=(self.img_rows, self.img_cols, self.channels)))
+                              padding="valid",
+                              strides=1,
+                              input_shape=(self.img_rows, self.img_cols, self.channels)))
         self.model.add(Activation('relu'))
 
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
         self.model.add(Activation('relu'))
 
-        self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation = "relu"))
+        self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation="relu"))
 
-        self.model.add(MaxPooling2D(pool_size=(8,8)))
+        self.model.add(MaxPooling2D(pool_size=(8, 8)))
 
         self.model.add(Flatten())
         print("Model flattened out to: ", self.model.output_shape)
@@ -116,29 +110,26 @@ class EyeNet:
 
         self.model.add(Dense(self.nb_classes, activation="softmax"))
 
-
         self.model = multi_gpu_model(self.model, gpus=8)
 
         self.model.compile(loss="categorical_crossentropy",
-                        optimizer="adam",
-                        metrics=["accuracy"])
-
+                           optimizer="adam",
+                           metrics=["accuracy"])
 
         stop = EarlyStopping(monitor="val_acc", min_delta=0.001,
-                                patience=2,
-                                mode="auto")
+                             patience=2,
+                             mode="auto")
 
         self.model.fit(self.X_train, self.y_train, batch_size=batch_size,
-                    epochs=nb_epoch,
-                    verbose=1,
-                    validation_split=0.2,
-                    class_weight=self.weights,
-                    callbacks=[stop])
+                       epochs=nb_epoch,
+                       verbose=1,
+                       validation_split=0.2,
+                       class_weight=self.weights,
+                       callbacks=[stop])
 
         return self.model
 
-
-    def predict(self, model):
+    def predict(self):
         """
         Predicts the model output, and computes precision, recall, and F1 score.
 
@@ -173,14 +164,15 @@ class EyeNet:
         """
         if score >= 0.75:
             print("Saving Model")
-            self.model.save("../models/" + model_name + "_recall_" + str(round(score,4)) + ".h5")
+            self.model.save("../models/" + model_name + "_recall_" + str(round(score, 4)) + ".h5")
         else:
             print("Model Not Saved. Score: ", score)
 
+
 if __name__ == '__main__':
     cnn = EyeNet()
-    cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X = "../data/X_train_256_v2.npy")
+    cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X="../data/X_train_256_v2.npy")
     cnn.reshape_data(img_rows=256, img_cols=256, channels=3, nb_classes=5)
-    model = cnn.cnn_model(nb_filters=32, kernel_size=(4,4), batch_size=512, nb_epoch=50)
-    precision, recall, f1 = cnn.predict(model)
-    cnn.save_model(score = recall, model_name = "DR_Class")
+    model = cnn.cnn_model(nb_filters=32, kernel_size=(4, 4), batch_size=512, nb_epoch=50)
+    precision, recall, f1 = cnn.predict()
+    cnn.save_model(score=recall, model_name="DR_Class")
