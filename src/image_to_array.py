@@ -1,12 +1,12 @@
-import cv2
+import time
+
 import numpy as np
 import pandas as pd
-import time
-import PIL
 from PIL import Image
 
+
 def change_image_name(df, column):
-    '''
+    """
     Appends the suffix '.jpeg' for all image names in the DataFrame
 
     INPUT
@@ -16,12 +16,12 @@ def change_image_name(df, column):
     OUTPUT
         Pandas DataFrame, with a single column changed to include the
         aforementioned suffix.
-    '''
+    """
     return [i + '.jpeg' for i in df[column]]
 
 
 def convert_images_to_arrays_train(file_path, df):
-    '''
+    """
     Converts each image to an array, and appends each array to a new NumPy
     array, based on the image column equaling the image file name.
 
@@ -31,7 +31,7 @@ def convert_images_to_arrays_train(file_path, df):
 
     OUTPUT
         NumPy array of image arrays.
-    '''
+    """
 
     lst_imgs = [l for l in df['train_image_name']]
 
@@ -39,7 +39,7 @@ def convert_images_to_arrays_train(file_path, df):
 
 
 def save_to_array(arr_name, arr_object):
-    '''
+    """
     Saves data object as a NumPy file. Used for saving train and test arrays.
 
     INPUT
@@ -49,7 +49,7 @@ def save_to_array(arr_name, arr_object):
 
     OUTPUT
         NumPy array of image arrays
-    '''
+    """
     return np.save(arr_name, arr_object)
 
 
