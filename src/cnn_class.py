@@ -158,8 +158,8 @@ class EyeNet:
         precision = precision_score(self.y_test, predictions, average="micro")
         recall = recall_score(self.y_test, predictions, average="micro")
         f1 = f1_score(self.y_test, predictions, average="micro")
-        kappa = cohen_kappa_score(self.y_test, predictions)
-        return precision, recall, f1, kappa
+        cohen_kappa = cohen_kappa_score(self.y_test, predictions)
+        return precision, recall, f1, cohen_kappa
 
     def save_model(self, score, model_name):
         """
@@ -184,9 +184,9 @@ if __name__ == '__main__':
     cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X="../data/X_train_256_v2.npy")
     cnn.reshape_data(img_rows=256, img_cols=256, channels=3, nb_classes=5)
     model = cnn.cnn_model(nb_filters=32, kernel_size=(4, 4), batch_size=512, nb_epoch=50)
-    precision, recall, f1, kappa = cnn.predict()
+    precision, recall, f1, cohen_kappa = cnn.predict()
     print("Precision: ", precision)
     print("Recall: ", recall)
     print("F1: ", f1)
-    print("Cohen Kappa Score", kappa)
+    print("Cohen Kappa Score", cohen_kappa)
     cnn.save_model(score=recall, model_name="DR_Class")
