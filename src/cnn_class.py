@@ -13,6 +13,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import cohen_kappa_score
 from sklearn.model_selection import train_test_split
 from sklearn.utils import class_weight
+from skll.metrics import kappa
 
 np.random.seed(1337)
 
@@ -87,7 +88,7 @@ class EyeNet:
         print("y_train Shape: ", self.y_train.shape)
         print("y_test Shape: ", self.y_test.shape)
 
-    def cnn_model(self, nb_filters=32, kernel_size=(2,2), batch_size, nb_epoch):
+    def cnn_model(self, nb_filters, kernel_size, batch_size, nb_epoch):
         """
         Define and run the convolutional neural network
 
@@ -159,7 +160,8 @@ class EyeNet:
         recall = recall_score(self.y_test, predictions, average="micro")
         f1 = f1_score(self.y_test, predictions, average="micro")
         cohen_kappa = cohen_kappa_score(self.y_test, predictions)
-        return precision, recall, f1, cohen_kappa
+        quad_kappa = kappa(self.y_test, predictions, weights='quadratic')
+        return precision, recall, f1, cohen_kappa, quad_kappa
 
     def save_model(self, score, model_name):
         """
@@ -184,9 +186,10 @@ if __name__ == '__main__':
     cnn.split_data(y_file_path="../labels/trainLabels_master_256_v2.csv", X="../data/X_train_256_v2.npy")
     cnn.reshape_data(img_rows=256, img_cols=256, channels=3, nb_classes=5)
     model = cnn.cnn_model(nb_filters=32, kernel_size=(4, 4), batch_size=512, nb_epoch=50)
-    precision, recall, f1, cohen_kappa = cnn.predict()
+    precision, recall, f1, cohen_kappa, quad_kappa  = cnn.predict()
     print("Precision: ", precision)
     print("Recall: ", recall)
     print("F1: ", f1)
     print("Cohen Kappa Score", cohen_kappa)
+    print("Quadratic Kappa: ", quad_kappa)
     cnn.save_model(score=recall, model_name="DR_Class")
