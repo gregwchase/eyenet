@@ -99,11 +99,9 @@ class EyeNet:
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
                               padding="valid",
                               strides=1,
-                              input_shape=(self.img_rows, self.img_cols, self.channels)))
-        self.model.add(Activation('relu'))
+                              input_shape=(self.img_rows, self.img_cols, self.channels), activation="relu"))
 
-        self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-        self.model.add(Activation('relu'))
+        self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation="relu"))
 
         self.model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation="relu"))
 

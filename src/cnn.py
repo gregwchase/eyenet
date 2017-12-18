@@ -149,7 +149,6 @@ if __name__ == '__main__':
     y = np.array([1 if l >= 1 else 0 for l in labels['level']])
     # y = np.array(labels['level'])
 
-
     print("Splitting data into test/ train datasets")
     X_train, X_test, y_train, y_test = split_data(X, y, 0.2)
 
