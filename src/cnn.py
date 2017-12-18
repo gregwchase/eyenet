@@ -72,14 +72,11 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
     model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]),
                      padding='valid',
                      strides=1,
-                     input_shape=(img_rows, img_cols, channels)))
-    model.add(Activation('relu'))
+                     input_shape=(img_rows, img_cols, channels), activation="relu"))
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation="relu"))
 
-    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1])))
-    model.add(Activation('relu'))
+    model.add(Conv2D(nb_filters, (kernel_size[0], kernel_size[1]), activation="relu"))
 
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
