@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 import pandas as pd
 from keras.callbacks import EarlyStopping
@@ -9,6 +7,7 @@ from keras.layers import MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
 from keras.utils import np_utils
+from keras.utils import multi_gpu_model
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
@@ -47,7 +46,7 @@ def reshape_data(arr, img_rows, img_cols, channels):
     return arr.reshape(arr.shape[0], img_rows, img_cols, channels)
 
 
-def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes):
+def cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size, nb_classes, nb_gpus):
     """
     Define and run the Convolutional Neural Network
 
@@ -88,7 +87,10 @@ def cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channel
 
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy',
+
+    model = multi_gpu_model(model, gpus=nb_gpus)
+
+    model.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
 
@@ -127,11 +129,8 @@ def save_model(model, score, model_name):
 
 
 if __name__ == '__main__':
-    # Specify GPU's to Use
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
-
     # Specify parameters before model is run.
-    batch_size = 1000
+    batch_size = 512
     nb_classes = 2
     nb_epoch = 30
 
@@ -172,8 +171,8 @@ if __name__ == '__main__':
 
     print("Training Model")
 
-    model = cnn_model(X_train, X_test, y_train, y_test, kernel_size, nb_filters, channels, nb_epoch, batch_size,
-                      nb_classes)
+    model = cnn_model(X_train, y_train, kernel_size, nb_filters, channels, nb_epoch, batch_size,
+                      nb_classes, nb_gpus=8)
 
     print("Predicting")
     y_pred = model.predict(X_test)
@@ -182,8 +181,8 @@ if __name__ == '__main__':
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    y_pred = [np.argmax(y) for y in y_pred]
-    y_test = [np.argmax(y) for y in y_test]
+    y_test = np.argmax(y_test, axis=1)
+    y_pred = np.argmax(y_pred, axis=1)
 
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
