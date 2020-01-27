@@ -1,18 +1,19 @@
+# TODO: Migrate CNN scripts to one file
+# TODO: Add argument for binary/multi classification
+# TODO: Option: final layer to single/ multiple neurons with sigmoid/ softmax activation
+
 import numpy as np
 import pandas as pd
-from keras.callbacks import EarlyStopping
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import MaxPooling2D
-from keras.layers.convolutional import Conv2D
-from keras.models import Sequential
-from keras.utils import np_utils
-from keras.utils import multi_gpu_model
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import cohen_kappa_score
+from sklearn.metrics import (cohen_kappa_score, f1_score, precision_score,
+                             recall_score)
 from sklearn.model_selection import train_test_split
 from sklearn.utils import class_weight
+
+from keras.callbacks import EarlyStopping
+from keras.layers import Activation, Dense, Dropout, Flatten, MaxPooling2D
+from keras.layers.convolutional import Conv2D
+from keras.models import Sequential
+from keras.utils import multi_gpu_model, np_utils
 from skll.metrics import kappa
 
 np.random.seed(1337)
