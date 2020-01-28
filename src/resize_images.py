@@ -6,6 +6,7 @@ from concurrent.futures import ProcessPoolExecutor
 
 import pandas as pd
 from PIL import Image
+from tqdm import tqdm
 
 
 def make_image_thumbnail(filename):
@@ -46,18 +47,33 @@ def process_images():
         # Process the list of files, but split the work across the process pool to use all CPUs
         zip(image_files, executor.map(make_image_thumbnail, image_files))
 
-def move_images(df):
+def create_directories():
     """
-    Move images to folder with labels
+    Create directories for images
     """
 
-    [os.mkdir(f"../data/train_resized/{val}") for val in list(range(0,5))]
+    for val in list(range(0,5)):
+        if not os.path.exists(f"../data/train_resized/{val}"):
+            os.mkdir(f"../data/train_resized/{val}")
 
+def move_images():
+    """
+    Move images to folder based on label
+    """
+
+    df_labels = pd.read_csv("../data/trainLabels.csv")
+
+    dict_images = dict(zip(df_labels["image"], df_labels["level"]))
+
+    # Move images to labeled directory
+    for img in tqdm(dict_images.items()):
+        shutil.move(f"../data/train_resized/{img[0]}.jpeg",
+            f"../data/train_resized/{img[1]}/{img[0]}.jpeg")
 
 
 if __name__ == '__main__':
     process_images()
 
-    # df_labels = pd.read_csv("../data/trainLabels.csv")
+    create_directories()
 
-    # dict_images = dict(zip(df_labels.image, df_labels.level))  
+    move_images()
