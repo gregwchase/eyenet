@@ -170,5 +170,7 @@ device. There is no need for an internet connection for the application to work.
 
 3. [TensorFlow: Machine Learning For Everyone](https://youtu.be/mWl45NkFBOc)
 
+4. [Multiprocessing with Process Pools](https://medium.com/@ageitgey/quick-tip-speed-up-your-python-data-processing-scripts-with-process-pools-cf275350163a)
+
 ## Tech Stack
 <img align="center" src="images/tech_stack/tech_stack_banner.png" alt="tech_stack_banner"/>
