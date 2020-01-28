@@ -1,55 +1,48 @@
+
+import glob
 import os
-import sys
-# from PIL import Image
-from PIL import ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
-from skimage import io
-from skimage.transform import resize
-import numpy as np
+from concurrent.futures import ProcessPoolExecutor
 
+from PIL import Image
 
-def create_directory(directory):
-    '''
-    Creates a new folder in the specified directory if the folder doesn't exist.
+def make_image_thumbnail(filename):
+    """
+    Resize image for CNN
 
     INPUT
-        directory: Folder to be created, called as "folder/".
-
+        filename: str, required; string of image to be processed
+    
     OUTPUT
-        New folder in the current directory.
-    '''
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+        Resized image, saved to directory
+        String of filename with directory
+    """
+    # The thumbnail will be named "<original_filename>_thumbnail.jpg"
+    base_filename, file_extension = os.path.splitext(filename)
+    thumbnail_filename = f"{base_filename}_thumbnail{file_extension}"
+    
+    thumbnail_filename = thumbnail_filename.replace("train", "train_resized")
 
+    # Create and save thumbnail image
+    image = Image.open(filename)
+    image.thumbnail(size=(256, 256))
+    image.save(f"{thumbnail_filename}", "jpeg")
 
-def crop_and_resize_images(path, new_path, cropx, cropy, img_size=256):
-    '''
-    Crops, resizes, and stores all images from a directory in a new directory.
+    return thumbnail_filename
 
-    INPUT
-        path: Path where the current, unscaled images are contained.
-        new_path: Path to save the resized images.
-        img_size: New size for the rescaled images.
+def process_images():
+    """
+    Create a pool of processes to resize images.
+    One process created per CPU
+    """
 
-    OUTPUT
-        All images cropped, resized, and saved from the old folder to the new folder.
-    '''
-    create_directory(new_path)
-    dirs = [l for l in os.listdir(path) if l != '.DS_Store']
-    total = 0
+    with ProcessPoolExecutor() as executor:
+        
+        # Get a list of files to process
+        image_files = glob.glob("../data/train/*.jpeg")
 
-    for item in dirs:
-        img = io.imread(path+item)
-        y,x,channel = img.shape
-        startx = x//2-(cropx//2)
-        starty = y//2-(cropy//2)
-        img = img[starty:starty+cropy,startx:startx+cropx]
-        img = resize(img, (256,256))
-        io.imsave(str(new_path + item), img)
-        total += 1
-        print("Saving: ", item, total)
+        # Process the list of files, but split the work across the process pool to use all CPUs
+        zip(image_files, executor.map(make_image_thumbnail, image_files))
 
 
 if __name__ == '__main__':
-    crop_and_resize_images(path='../data/train/', new_path='../data/train-resized-256/', cropx=1800, cropy=1800, img_size=256)
-    crop_and_resize_images(path='../data/test/', new_path='../data/test-resized-256/', cropx=1800, cropy=1800, img_size=256)
+    process_images()
