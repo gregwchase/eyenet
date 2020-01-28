@@ -1,9 +1,12 @@
 
 import glob
 import os
+import shutil
 from concurrent.futures import ProcessPoolExecutor
 
+import pandas as pd
 from PIL import Image
+
 
 def make_image_thumbnail(filename):
     """
@@ -18,7 +21,7 @@ def make_image_thumbnail(filename):
     """
     # The thumbnail will be named "<original_filename>_thumbnail.jpg"
     base_filename, file_extension = os.path.splitext(filename)
-    thumbnail_filename = f"{base_filename}_thumbnail{file_extension}"
+    thumbnail_filename = f"{base_filename}{file_extension}"
     
     thumbnail_filename = thumbnail_filename.replace("train", "train_resized")
 
@@ -43,6 +46,18 @@ def process_images():
         # Process the list of files, but split the work across the process pool to use all CPUs
         zip(image_files, executor.map(make_image_thumbnail, image_files))
 
+def move_images(df):
+    """
+    Move images to folder with labels
+    """
+
+    [os.mkdir(f"../data/train_resized/{val}") for val in list(range(0,5))]
+
+
 
 if __name__ == '__main__':
     process_images()
+
+    # df_labels = pd.read_csv("../data/trainLabels.csv")
+
+    # dict_images = dict(zip(df_labels.image, df_labels.level))  
