@@ -1,16 +1,13 @@
 import numpy as np
 import pandas as pd
-from keras.callbacks import EarlyStopping
-from keras.callbacks import TensorBoard
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import MaxPooling2D
+from sklearn.metrics import precision_score, recall_score
+from sklearn.model_selection import train_test_split
+
+from keras.callbacks import EarlyStopping, TensorBoard
+from keras.layers import Activation, Dense, Dropout, Flatten, MaxPooling2D
 from keras.layers.convolutional import Conv2D
 from keras.models import Sequential
-from keras.utils import np_utils
-from keras.utils import multi_gpu_model
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.model_selection import train_test_split
+from keras.utils import multi_gpu_model, np_utils
 
 np.random.seed(1337)
 

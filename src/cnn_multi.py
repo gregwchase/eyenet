@@ -1,20 +1,20 @@
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Convolution2D, MaxPooling2D
-from keras.layers.convolutional import Conv2D
-from keras.utils import np_utils
-from keras import backend as K
-from keras.callbacks import EarlyStopping
-from keras.callbacks import TensorBoard
-import pandas as pd
-import numpy as np
-from keras.layers.normalization import BatchNormalization
-from keras.optimizers import SGD
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import recall_score
-from sklearn.metrics import precision_score
-from sklearn.utils import class_weight
 import os
+
+import numpy as np
+import pandas as pd
+from sklearn.metrics import precision_score, recall_score
+from sklearn.model_selection import train_test_split
+from sklearn.utils import class_weight
+
+from keras import backend as K
+from keras.callbacks import EarlyStopping, TensorBoard
+from keras.layers import (Activation, Convolution2D, Dense, Dropout, Flatten,
+                          MaxPooling2D)
+from keras.layers.convolutional import Conv2D
+from keras.layers.normalization import BatchNormalization
+from keras.models import Sequential
+from keras.optimizers import SGD
+from keras.utils import np_utils
 
 np.random.seed(1337)
 
