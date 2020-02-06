@@ -4,9 +4,12 @@ import os
 import shutil
 from concurrent.futures import ProcessPoolExecutor
 
+import cv2
 import pandas as pd
-from PIL import Image
+import psutil
+# from PIL import Image
 from tqdm import tqdm
+
 
 class PreprocessImages:
 
@@ -31,9 +34,12 @@ class PreprocessImages:
         thumbnail_filename = thumbnail_filename.replace("train", "train_resized")
 
         # Create and save thumbnail image
-        image = Image.open(filename)
-        image.thumbnail(size=(256, 256))
-        image.save(f"{thumbnail_filename}", "jpeg")
+        image = cv2.imread(filename)
+        image = cv2.resize(image, (256,256))
+        cv2.imwrite(f"{thumbnail_filename}", image)
+        # image = Image.open(filename)
+        # image.thumbnail(size=(256, 256))
+        # image.save(f"{thumbnail_filename}", "jpeg")
 
         return thumbnail_filename
 
@@ -43,7 +49,10 @@ class PreprocessImages:
         One process created per CPU
         """
 
-        with ProcessPoolExecutor() as executor:
+        # Reserve one logical CPU core
+        N_CPUS = psutil.cpu_count(logical=True) - 1
+
+        with ProcessPoolExecutor(max_workers=N_CPUS) as executor:
             
             # Get a list of files to process
             image_files = glob.glob("../data/train/*.jpeg")
