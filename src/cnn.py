@@ -36,59 +36,61 @@ class EyeNet:
         self.channels = 3
         self.n_gpus = 8
 
-    def split_data(self, y_file_path, X, test_data_size=0.2):
-        """
-        Split data into test and training data sets.
+    # TODO: Remove split_data when data split is validated
+    # def split_data(self, y_file_path, X, test_data_size=0.2):
+    #     """
+    #     Split data into test and training data sets.
 
-        INPUT
-            y_file_path: path to CSV containing labels
-            X: NumPy array of arrays
-            test_data_size: size of test/train split. Value from 0 to 1
+    #     INPUT
+    #         y_file_path: path to CSV containing labels
+    #         X: NumPy array of arrays
+    #         test_data_size: size of test/train split. Value from 0 to 1
 
-        OUTPUT
-            Four arrays: X_train, X_test, y_train, and y_test
-        """
-        # labels = pd.read_csv(y_file_path, nrows=60)
-        labels = pd.read_csv(y_file_path)
-        self.X = np.load(X)
-        self.y = np.array(labels['level'])
-        self.weights = class_weight.compute_class_weight('balanced', np.unique(self.y), self.y)
-        self.test_data_size = test_data_size
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y,
-                                                                                test_size=self.test_data_size,
-                                                                                random_state=42)
+    #     OUTPUT
+    #         Four arrays: X_train, X_test, y_train, and y_test
+    #     """
+    #     # labels = pd.read_csv(y_file_path, nrows=60)
+    #     labels = pd.read_csv(y_file_path)
+    #     self.X = np.load(X)
+    #     self.y = np.array(labels['level'])
+    #     self.weights = class_weight.compute_class_weight('balanced', list(range(0,5)), self.y)
+    #     self.test_data_size = test_data_size
+    #     self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y,
+    #                                                                             test_size=self.test_data_size,
+    #                                                                             random_state=42)
 
-    def reshape_data(self, img_rows, img_cols, channels, nb_classes):
-        """
-        Reshapes arrays into format for MXNet
+    # def reshape_data(self, img_rows, img_cols, channels, nb_classes):
+    #     """
+    #     Reshapes arrays into format for MXNet
 
-        INPUT
-            img_rows: Array (image) height
-            img_cols: Array (image) width
-            channels: Specify if image is grayscale(1) or RGB (3)
-            nb_classes: number of image classes/ categories
+    #     INPUT
+    #         img_rows: Array (image) height
+    #         img_cols: Array (image) width
+    #         channels: Specify if image is grayscale(1) or RGB (3)
+    #         nb_classes: number of image classes/ categories
 
-        OUTPUT
-            Reshaped array of NumPy arrays
-        """
-        self.nb_classes = nb_classes
-        self.X_train = self.X_train.reshape(self.X_train.shape[0], img_rows, img_cols, channels)
-        self.X_train = self.X_train.astype("float32")
-        self.X_train /= 255
+    #     OUTPUT
+    #         Reshaped array of NumPy arrays
+    #     """
+    #     self.nb_classes = nb_classes
+    #     self.X_train = self.X_train.reshape(self.X_train.shape[0], img_rows, img_cols, channels)
+    #     self.X_train = self.X_train.astype("float32")
+    #     self.X_train /= 255
 
-        self.y_train = np_utils.to_categorical(self.y_train, self.nb_classes)
+    #     self.y_train = np_utils.to_categorical(self.y_train, self.nb_classes)
 
-        self.X_test = self.X_test.reshape(self.X_test.shape[0], img_rows, img_cols, channels)
-        self.X_test = self.X_test.astype("float32")
-        self.X_test /= 255
+    #     self.X_test = self.X_test.reshape(self.X_test.shape[0], img_rows, img_cols, channels)
+    #     self.X_test = self.X_test.astype("float32")
+    #     self.X_test /= 255
 
-        self.y_test = np_utils.to_categorical(self.y_test, self.nb_classes)
+    #     self.y_test = np_utils.to_categorical(self.y_test, self.nb_classes)
 
-        print("X_train Shape: ", self.X_train.shape)
-        print("X_test Shape: ", self.X_test.shape)
-        print("y_train Shape: ", self.y_train.shape)
-        print("y_test Shape: ", self.y_test.shape)
+    #     print("X_train Shape: ", self.X_train.shape)
+    #     print("X_test Shape: ", self.X_test.shape)
+    #     print("y_train Shape: ", self.y_train.shape)
+    #     print("y_test Shape: ", self.y_test.shape)
 
+    # TODO: Convert to PyTorch/ fast.ai
     def cnn_model(self, nb_filters, kernel_size, batch_size, nb_epoch):
         """
         Define and run the convolutional neural network
