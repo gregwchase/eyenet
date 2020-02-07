@@ -16,6 +16,10 @@ def split_data():
     X_train, X_test = train_test_split(X_train,
         test_size=len(X_valid),
         random_state=42)
+
+    X_train = pd.DataFrame(X_train).reset_index(drop=True)
+    X_valid = pd.DataFrame(X_valid).reset_index(drop=True)
+    X_train = pd.DataFrame(X_train).reset_index(drop=True)
     
     return X_train, X_valid, X_test
 
