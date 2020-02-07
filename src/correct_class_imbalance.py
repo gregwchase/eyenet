@@ -9,19 +9,32 @@ def split_data():
 
     # Create train/test data before correcting class imbalance
     # TODO: Stratify distributions
-    X_train, X_valid = train_test_split(df_labels,
-        test_size=0.2,
-        random_state=42)
 
-    X_train, X_test = train_test_split(X_train,
-        test_size=len(X_valid),
-        random_state=42)
+    # Create validation data (20% of whole dataset)
+    X_valid = df_labels.sample(frac=0.2)
+    df_labels.drop(X_valid.index, inplace=True)
+    X_valid = create_dict(df=X_valid)
 
-    X_train = pd.DataFrame(X_train).reset_index(drop=True)
-    X_valid = pd.DataFrame(X_valid).reset_index(drop=True)
-    X_train = pd.DataFrame(X_train).reset_index(drop=True)
-    
+    # Create test data (20% of whole dataset)
+    X_test = df_labels.sample(n=len(X_valid))
+    df_labels.drop(X_test.index, inplace=True)
+    X_test = create_dict(df=X_test)
+
+    # Create training data
+    X_train = df_labels
+    X_train = create_dict(df=X_train)
+
     return X_train, X_valid, X_test
+
+def create_dict(df):
+    """
+    Create dictionary of values
+    """
+    dict_images = dict(zip(
+            df["image"],
+            df["level"]
+            ))
+    return dict_images
 
 if __name__ == '__main__':
 
