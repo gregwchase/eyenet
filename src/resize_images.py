@@ -82,13 +82,14 @@ class PreprocessImages:
             if not os.path.exists(f"../data/train_resized/{new_dir_name}/{val}"):
                 os.mkdir(f"../data/train_resized/{new_dir_name}/{val}")
 
-    def move_images(self, dict_images):
+    def move_images(self, dict_images, new_dir_name):
         """
         Move images to folder based on label
 
         INPUT
             dict_images: dictionary of image name and label
                 {"13_left": 0, "13_right": 1}
+            new_dir_name: str, name of directory where images will be moved
         """
 
         # dict_images = dict(zip(
@@ -99,7 +100,7 @@ class PreprocessImages:
         # Move images to labeled directory
         for img in tqdm(dict_images.items()):
             shutil.move(f"../data/train_resized/{img[0]}.jpeg",
-                f"../data/train_resized/{img[1]}/{img[0]}.jpeg")
+                f"../data/train_resized/{new_dir_name}/{img[1]}/{img[0]}.jpeg")
 
 
 if __name__ == '__main__':
@@ -108,8 +109,14 @@ if __name__ == '__main__':
 
     preprocess.process_images()
 
-    # preprocess.create_directories(new_dir_name="train")
+    # Create new directories for images
+    preprocess.create_directories(new_dir_name="train")
+    preprocess.create_directories(new_dir_name="valid")
+    preprocess.create_directories(new_dir_name="test")
 
-    # X_train, X_valid, X_test = split_data()
+    X_train, X_valid, X_test = split_data()
 
-    # preprocess.move_images(dict_images=X_train)
+    # Move images to respective directories
+    preprocess.move_images(dict_images=X_train, new_dir_name="train")
+    preprocess.move_images(dict_images=X_valid, new_dir_name="valid")
+    preprocess.move_images(dict_images=X_test, new_dir_name="test")
