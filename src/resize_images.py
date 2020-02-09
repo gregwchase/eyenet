@@ -7,8 +7,10 @@ from concurrent.futures import ProcessPoolExecutor
 import cv2
 import pandas as pd
 import psutil
-# from PIL import Image
+from PIL import Image
 from tqdm import tqdm
+
+from correct_class_imbalance import split_data
 
 
 class PreprocessImages:
@@ -16,6 +18,8 @@ class PreprocessImages:
     def __init__(self):
         self.df_labels = pd.read_csv("../data/trainLabels.csv")
 
+    # TODO: Research NVIDIA DALI for preprocessing images
+    # TODO: Speed of PIL vs OpenCV
     def make_image_thumbnail(self, filename):
         """
         Resize image for CNN
@@ -34,12 +38,12 @@ class PreprocessImages:
         thumbnail_filename = thumbnail_filename.replace("train", "train_resized")
 
         # Create and save thumbnail image
-        image = cv2.imread(filename)
-        image = cv2.resize(image, (256,256))
-        cv2.imwrite(f"{thumbnail_filename}", image)
-        # image = Image.open(filename)
-        # image.thumbnail(size=(256, 256))
-        # image.save(f"{thumbnail_filename}", "jpeg")
+        # image = cv2.imread(filename)
+        # image = cv2.resize(image, (256,256))
+        # cv2.imwrite(f"{thumbnail_filename}", image)
+        image = Image.open(filename)
+        image = image.resize(size=(256, 256), resample=Image.NEAREST)
+        image.save(f"{thumbnail_filename}", "jpeg")
 
         return thumbnail_filename
 
@@ -60,24 +64,37 @@ class PreprocessImages:
             # Process the list of files, but split the work across the process pool to use all CPUs
             zip(image_files, executor.map(self.make_image_thumbnail, image_files))
 
-    def create_directories(self):
+    def create_directories(self, new_dir_name):
         """
         Create directories for images
+
+        INPUT
+            new_dir_name: str, name of directory to create
+
+        OUTPUT
+            Folder structure based on new_dir_name, with one folder per image class
         """
+
+        if not os.path.exists(f"../data/train_resized/{new_dir_name}"):
+                os.mkdir(f"../data/train_resized/{new_dir_name}")
 
         for val in list(range(0,5)):
-            if not os.path.exists(f"../data/train_resized/{val}"):
-                os.mkdir(f"../data/train_resized/{val}")
+            if not os.path.exists(f"../data/train_resized/{new_dir_name}/{val}"):
+                os.mkdir(f"../data/train_resized/{new_dir_name}/{val}")
 
-    def move_images(self):
+    def move_images(self, dict_images):
         """
         Move images to folder based on label
+
+        INPUT
+            dict_images: dictionary of image name and label
+                {"13_left": 0, "13_right": 1}
         """
 
-        dict_images = dict(zip(
-            self.df_labels["image"],
-            self.df_labels["level"]
-            ))
+        # dict_images = dict(zip(
+        #     self.df_labels["image"],
+        #     self.df_labels["level"]
+        #     ))
 
         # Move images to labeled directory
         for img in tqdm(dict_images.items()):
@@ -91,6 +108,8 @@ if __name__ == '__main__':
 
     preprocess.process_images()
 
-    preprocess.create_directories()
+    # preprocess.create_directories(new_dir_name="train")
 
-    preprocess.move_images()
+    # X_train, X_valid, X_test = split_data()
+
+    # preprocess.move_images(dict_images=X_train)
