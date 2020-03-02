@@ -41,6 +41,14 @@ All images are taken of different people, using different cameras, and of differ
 
 The training data is comprised of 35,126 images, which are augmented during preprocessing.
 
+## Scripts
+
+|Name|Purpose|
+|:-----:|:-----|
+|`download_data.sh`|Download data from Kaggle, and prep in separate folders|
+|`resize_images.py`|Resize all images in parallel.|
+|`cnn.py`|Train, evaluate, and save CNN model.|
+
 
 ## Exploratory Data Analysis
 
@@ -51,8 +59,18 @@ five categories to predict against, the plot below shows the severe class imbala
 <img align="center" src="images/eda/DR_vs_Frequency_tableau.png" alt="EDA - Class Imbalance" height="458" width="736" />
 </p>
 
+### Classification Breakdown
+
 Of the original training data, 25,810 images are classified as not having retinopathy,
-while 9,316 are classified as having retinopathy.
+while the remining 9,316 images contain various degrees of retinopathy.
+
+|Classification|Count|
+|:-----:|:-----|
+|No DR|25810|
+|Mild|5292|
+|Moderate|2443|
+|Severe|873|
+|Proliferative|708|
 
 Due to the class imbalance, steps taken during [preprocessing](#preprocessing) in order to rectify the imbalance, and when training the model.
 
@@ -75,26 +93,34 @@ show class 0 (no retinopathy); the second two rows show class 4 (proliferative r
 The preprocessing pipeline is the following:
 
 1. Download all images to EC2 using the [download script](src/download_data.sh).
-2. Crop & resize all images using the [resizing script](src/resize_images.py) and the [preprocessing script](src/preprocess_images.py).
-3. Rotate & mirror all images using the [rotation script](src/rotate_images.py).
-4. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py).
+2. Resize all images using the [resizing script](src/resize_images.py) and the [preprocessing script](src/preprocess_images.py).
+3. Address and correct class imbalance with data augmentation
+<!-- 3. Rotate & mirror all images using the [rotation script](src/rotate_images.py). -->
+<!-- 4. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py). -->
 
+TODO: Kaggle CLI
 ### Download All Images to EC2
-The images were downloaded using the Kaggle CLI. Running this on an EC2 instance
+The images were downloaded using the [Kaggle CLI]. Running this on an EC2 instance
 allows you to download the images in about 30 minutes. All images are then placed
 in their respective folders, and expanded from their compressed files. In total,
 the original dataset totals 35 gigabytes.
 
-### Crop and Resize All Images
-All images were scaled down to 256 by 256. Despite taking longer to train, the
+<!-- ### Crop and Resize All Images -->
+### Resize All Images
+All images were scaled down to 256 by 256. Despite taking longer to resize and train, the
 detail present in photos of this size is much greater then at 128 by 128.
 
-Additionally, 403 images were dropped from the training set. Scikit-Image raised
+|Logical Cores|Estimated Runtime (minutes)| Library |
+|:-----:|:-----:|:-----:|
+|11|18|OpenCV|
+|11|15.5|PIL|
+
+<!-- Additionally, 403 images were dropped from the training set. Scikit-Image raised
 multiple warnings during resizing, due to these images having no color space.
 Because of this, any images that were completely black were removed from the
-training data.
+training data. -->
 
-### Rotate and Mirror All Images
+<!-- ### Rotate and Mirror All Images
 All images were rotated and mirrored.Images without retinopathy were mirrored;
 images that had retinopathy were mirrored, and rotated 90, 120, 180, and 270
 degrees.
@@ -107,28 +133,39 @@ the cropping and rotations how the majority of noise is removed.
 
 After rotations and mirroring, the class imbalance is rectified, with a few thousand
 more images having retinopathy. In total, there are 106,386 images being processed
-by the neural network.
+by the neural network. -->
 
+### Data Augmentation
 
+Because of the class imbalance, data augmentation was utilized to correct this issue.
+
+Correction happened by utilizing:
+* over_sampling
+* augmentation with variance
+
+TODO: Remove/replace image
 <p align = "center">
 <img align="center" src="images/eda/DR_vs_frequency_balanced.png" alt="EDA - Corrected Class Imbalance" width="664" height="458" />
 </p>
 
 ## Neural Network Architecture
 
-The model is built using Keras, utilizing TensorFlow as the backend.
-TensorFlow was chosen as the backend due to better performance over
-Theano, and the ability to visualize the neural network using TensorBoard.
+The CNN is built within PyTorch. PyTorch was chosen due to its performance over TensorFlow, and ability to write code easily with the [FAST.AI] library.
 
-For predicting two categories, EyeNet utilizes three convolutional layers,
+<!-- The model is built using Keras, utilizing TensorFlow as the backend.
+TensorFlow was chosen as the backend due to better performance over
+Theano, and the ability to visualize the neural network using TensorBoard. -->
+
+<!-- For predicting two categories, EyeNet utilizes three convolutional layers,
 each having a depth of 32. A Max Pooling layer is applied after all three
-convolutional layers with size (2,2).
+convolutional layers with size (2,2). -->
 
 After pooling, the data is fed through a single dense layer of size 128,
 and finally to the output layer, consisting of 2 softmax nodes.
 
-![TensorBoard CNN](images/readme/cnn_two_classes_tensorboard.png)
+<!-- ![TensorBoard CNN](images/readme/cnn_two_classes_tensorboard.png) -->
 
+TODO: New results
 ## Results
 The EyeNet classifier was created to determine if a patient has retinopathy. The current model returns the following scores.
 
@@ -146,6 +183,7 @@ the cropping is definitely helping in the network's performance. By not having
 extra black parts in the images, the network is able to process only the eye
 itself.
 
+TODO: Next steps changes
 ## Next Steps
 1. Program the neural network to retrain with new photos. This is a common practice,
 and only serves to optimize the model. Checks would be put in place to validate the
@@ -161,16 +199,17 @@ file to a `.mlmodel` file, and add the file to the iOS development cycle.
 Furthermore, the model is able to perform classification on the local
 device. There is no need for an internet connection for the application to work. Because of this, the ability to use EyeNet in remote areas is further justified, and that much easier.
 
-
+TODO: Include and change references
 ## References
 
 1. [What is Diabetic Retinopathy?](http://www.mayoclinic.org/diseases-conditions/diabetic-retinopathy/basics/definition/con-20023311)
 
 2. [Diabetic Retinopathy Winners' Interview: 4th place, Julian & Daniel](http://blog.kaggle.com/2015/08/14/diabetic-retinopathy-winners-interview-4th-place-julian-daniel/)
 
-3. [TensorFlow: Machine Learning For Everyone](https://youtu.be/mWl45NkFBOc)
+<!-- 3. [TensorFlow: Machine Learning For Everyone](https://youtu.be/mWl45NkFBOc) -->
 
 4. [Multiprocessing with Process Pools](https://medium.com/@ageitgey/quick-tip-speed-up-your-python-data-processing-scripts-with-process-pools-cf275350163a)
 
+TODO: Alter tech stack image
 ## Tech Stack
 <img align="center" src="images/tech_stack/tech_stack_banner.png" alt="tech_stack_banner"/>
