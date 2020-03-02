@@ -1,6 +1,4 @@
 # TODO: Migrate CNN scripts to one file
-# TODO: Add argument for binary/multi classification
-# TODO: Option: final layer to single/ multiple neurons with sigmoid/ softmax activation
 
 import numpy as np
 import pandas as pd
