@@ -1,30 +1,28 @@
+import random
+
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
-def split_data():
+
+def split_data(df):
     """
-    Split data into training, validation, and test images
+    Split data into test and train data
+    
+    Function ensures patients aren't in both data sets
     """
-    df_labels = pd.read_csv("../data/trainLabels.csv")
 
-    # Create train/test data before correcting class imbalance
-    # TODO: Stratify distributions
+    # Get list of unique patients
+    lst_patients = df["patient_id"].unique().tolist()
 
-    # Create validation data (20% of whole dataset)
-    X_valid = df_labels.sample(frac=0.2)
-    df_labels.drop(X_valid.index, inplace=True)
-    X_valid = create_dict(df=X_valid)
+    # Create list of unique test patients
+    lst_test_patients = random.sample(lst_patients, k=N_TEST)
 
-    # Create test data (20% of whole dataset)
-    X_test = df_labels.sample(n=len(X_valid))
-    df_labels.drop(X_test.index, inplace=True)
-    X_test = create_dict(df=X_test)
+    # Subset test patients
+    df_test = df[df["patient_id"].isin(lst_test_patients)]
 
-    # Create training data
-    X_train = df_labels
-    X_train = create_dict(df=X_train)
+    # Subset train patients
+    df_train = df[~df["patient_id"].isin(lst_test_patients)]
 
-    return X_train, X_valid, X_test
+    return df_train, df_test
 
 def create_dict(df):
     """
@@ -38,4 +36,12 @@ def create_dict(df):
 
 if __name__ == '__main__':
 
-    X_train, X_valid, X_test = split_data()
+    df_labels = pd.read_csv("../data/trainLabels.csv")
+    
+    N_ROWS = len(df_labels)
+    N_TEST = int(N_ROWS * 0.1)
+
+    # Create patient ID
+    df_labels["patient_id"] = df_labels["image"].str.split("_", expand=True)[0]
+
+    df_train, df_test = split_data(df=df_labels)
