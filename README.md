@@ -93,77 +93,27 @@ show class 0 (no retinopathy); the second two rows show class 4 (proliferative r
 The preprocessing pipeline is the following:
 
 1. Download all images to EC2 using the [download script](src/download_data.sh).
-2. Resize all images using the [resizing script](src/resize_images.py) and the [preprocessing script](src/preprocess_images.py).
+2. Preprocess all images with the [preprocessing script](src/preprocess_images.py).
 3. Address and correct class imbalance with data augmentation
-<!-- 3. Rotate & mirror all images using the [rotation script](src/rotate_images.py). -->
-<!-- 4. Convert all images to array of NumPy arrays, using the [conversion script](src/image_to_array.py). -->
 
 TODO: Kaggle CLI
 ### Download All Images to EC2
-The images were downloaded using the [Kaggle CLI]. Running this on an EC2 instance
+The images were downloaded using the [Kaggle API](https://github.com/Kaggle/kaggle-api). Running this on an EC2 instance
 allows you to download the images in about 30 minutes. All images are then placed
 in their respective folders, and expanded from their compressed files. In total,
 the original dataset totals 35 gigabytes.
 
-<!-- ### Crop and Resize All Images -->
-### Resize All Images
-All images were scaled down to 256 by 256. Despite taking longer to resize and train, the
-detail present in photos of this size is much greater then at 128 by 128.
+### Preprocess Images
 
-|Logical Cores|Estimated Runtime (minutes)| Library |
-|:-----:|:-----:|:-----:|
-|11|18|OpenCV|
-|11|15.5|PIL|
+Preprocssing was done using the method provided by Ben Graham's scripts, in the following order:
 
-<!-- Additionally, 403 images were dropped from the training set. Scikit-Image raised
-multiple warnings during resizing, due to these images having no color space.
-Because of this, any images that were completely black were removed from the
-training data. -->
-
-<!-- ### Rotate and Mirror All Images
-All images were rotated and mirrored.Images without retinopathy were mirrored;
-images that had retinopathy were mirrored, and rotated 90, 120, 180, and 270
-degrees.
-
-The first images show two pairs of eyes, along with the black borders. Notice in
-the cropping and rotations how the majority of noise is removed.
-
-![Unscaled Images](images/readme/sample_images_unscaled.jpg)
-![Rotated Images](images/readme/17_left_horizontal_white.jpg)
-
-After rotations and mirroring, the class imbalance is rectified, with a few thousand
-more images having retinopathy. In total, there are 106,386 images being processed
-by the neural network. -->
-
-### Data Augmentation
-
-Because of the class imbalance, data augmentation was utilized to correct this issue.
-
-Correction happened by utilizing:
-* over_sampling
-* augmentation with variance
-
-TODO: Remove/replace image
-<p align = "center">
-<img align="center" src="images/eda/DR_vs_frequency_balanced.png" alt="EDA - Corrected Class Imbalance" width="664" height="458" />
-</p>
+1. Rescale the images to have the same radius (300 pixels or 500 pixels)
+2. Subtracted the local average color; the local average gets mapped to 50% gray.
+3. Clipped the images to 90% size to remove the boundary effects.
 
 ## Neural Network Architecture
 
-The CNN is built within PyTorch. PyTorch was chosen due to its performance over TensorFlow, and ability to write code easily with the [FAST.AI] library.
-
-<!-- The model is built using Keras, utilizing TensorFlow as the backend.
-TensorFlow was chosen as the backend due to better performance over
-Theano, and the ability to visualize the neural network using TensorBoard. -->
-
-<!-- For predicting two categories, EyeNet utilizes three convolutional layers,
-each having a depth of 32. A Max Pooling layer is applied after all three
-convolutional layers with size (2,2). -->
-
-After pooling, the data is fed through a single dense layer of size 128,
-and finally to the output layer, consisting of 2 softmax nodes.
-
-<!-- ![TensorBoard CNN](images/readme/cnn_two_classes_tensorboard.png) -->
+The CNN is built within FastAI and PyTorch. PyTorch was chosen due to its performance over TensorFlow, and ability to write code easily with the [FAST.AI] library.
 
 TODO: New results
 ## Results
@@ -209,6 +159,10 @@ TODO: Include and change references
 <!-- 3. [TensorFlow: Machine Learning For Everyone](https://youtu.be/mWl45NkFBOc) -->
 
 4. [Multiprocessing with Process Pools](https://medium.com/@ageitgey/quick-tip-speed-up-your-python-data-processing-scripts-with-process-pools-cf275350163a)
+
+5. [FastAI - Image Classification](https://towardsdatascience.com/fastai-image-classification-32d626da20)
+
+6. [StackOverflow - Subtract Average Local Color](https://stackoverflow.com/questions/53417926/using-local-average-color-of-image-to-reduce-difference-in-lightning)
 
 TODO: Alter tech stack image
 ## Tech Stack
