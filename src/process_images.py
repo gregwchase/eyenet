@@ -1,9 +1,10 @@
-import cv2
 import glob
-import numpy as np
+import os
+import shutil
 
-from concurrent.futures import ProcessPoolExecutor
-import psutil
+import cv2
+import numpy as np
+from tqdm import tqdm
 
 
 class ProcessImages:
@@ -62,6 +63,44 @@ class ProcessImages:
         except:
             print(f"Unable to process {img}")
 
+    def create_directories(self, new_dir_name):
+        """
+        Create directories for images
+
+        INPUT
+            new_dir_name: str, name of directory to create
+
+        OUTPUT
+            Folder structure based on new_dir_name, with one folder per image class
+        """
+
+        if not os.path.exists(f"../data/processed/{new_dir_name}"):
+                os.mkdir(f"../data/processed/{new_dir_name}")
+
+        for val in list(range(0,5)):
+            if not os.path.exists(f"../data/processed/{new_dir_name}/{val}"):
+                os.mkdir(f"../data/processed/{new_dir_name}/{val}")
+
+    def move_images(self, dict_images, new_dir_name):
+        """
+        Move images to folder based on label
+
+        INPUT
+            dict_images: dictionary of image name and label
+                {"13_left": 0, "13_right": 1}
+            new_dir_name: str, name of directory where images will be moved
+        """
+
+        # dict_images = dict(zip(
+        #     self.df_labels["image"],
+        #     self.df_labels["level"]
+        #     ))
+
+        # Move images to labeled directory
+        for img in tqdm(dict_images.items()):
+            shutil.move(f"../data/processed/{img[0]}.jpeg",
+                f"../data/processed/{new_dir_name}/{img[1]}/{img[0]}.jpeg")
+
 if __name__ == "__main__":
 
     preprocess = ProcessImages()
@@ -70,14 +109,13 @@ if __name__ == "__main__":
 
     for i in IMG_FILES:
         preprocess.subtract_local_average_color(img=i)
-    
-    # # # Reserve one logical CPU core
-    # N_CPUS = psutil.cpu_count(logical=True) - 1
 
-    # with ProcessPoolExecutor(max_workers=N_CPUS) as executor:
-        
-    #     # Get a list of files to process
-    #     image_files = glob.glob(preprocess.SOURCE_DIR)
+    # Create directories
+    preprocess.create_directories(new_dir_name="train")
+    preprocess.create_directories(new_dir_name="valid")
+    preprocess.create_directories(new_dir_name="test")
 
-    #     # Process the list of files, but split the work across the process pool to use all CPUs
-    #     zip(image_files, executor.map(preprocess.subtract_local_average_color, image_files))
+    # Move images to respective directories
+    # preprocess.move_images(dict_images=X_train, new_dir_name="train")
+    # preprocess.move_images(dict_images=X_valid, new_dir_name="valid")
+    # preprocess.move_images(dict_images=X_test, new_dir_name="test")
