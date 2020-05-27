@@ -5,6 +5,7 @@ import shutil
 import cv2
 import numpy as np
 from tqdm import tqdm
+import pandas as pd
 
 
 class ProcessImages:
@@ -112,8 +113,13 @@ if __name__ == "__main__":
 
     # Create directories
     preprocess.create_directories(new_dir_name="train")
-    preprocess.create_directories(new_dir_name="valid")
+    # preprocess.create_directories(new_dir_name="valid")
     preprocess.create_directories(new_dir_name="test")
+
+    df_labels = pd.read_csv("../data/trainLabels.csv")
+
+    # Create dictionary of image name and label
+    dict_labels = df_labels.set_index("image").T.to_dict(orient="records")[0]
 
     # Move images to respective directories
     # preprocess.move_images(dict_images=X_train, new_dir_name="train")
