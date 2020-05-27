@@ -7,7 +7,8 @@ class ProcessImages:
 
     def __init__(self):
         self.SCALE = 300
-        self.IMG_DIR = "../data/sample/*.jpeg"
+        self.SOURCE_DIR = "../data/sample/*.jpeg"
+        self.TARGET_DIR = "../data/processed/"
 
     def scaleRadius(self, img):
         
@@ -24,7 +25,7 @@ class ProcessImages:
         Remove average local color per image
         Save image to new directory
         """
-        for f in glob.glob(self.IMG_DIR):
+        for f in glob.glob(self.SOURCE_DIR):
             
             try:
                 a=cv2.imread(f)
@@ -54,7 +55,7 @@ class ProcessImages:
                 img_name = f.split("/")[-1]
                 
                 # Save processed image
-                cv2.imwrite(f"../data/processed/{img_name}",a)
+                cv2.imwrite(f"{self.TARGET_DIR}{img_name}",a)
             
             except:
                 print(f"Unable to process {f}")
