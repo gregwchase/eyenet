@@ -113,7 +113,6 @@ if __name__ == "__main__":
 
     # Create directories
     preprocess.create_directories(new_dir_name="train")
-    # preprocess.create_directories(new_dir_name="valid")
     preprocess.create_directories(new_dir_name="test")
 
     df_labels = pd.read_csv("../data/trainLabels.csv")
@@ -123,5 +122,4 @@ if __name__ == "__main__":
 
     # Move images to respective directories
     # preprocess.move_images(dict_images=X_train, new_dir_name="train")
-    # preprocess.move_images(dict_images=X_valid, new_dir_name="valid")
     # preprocess.move_images(dict_images=X_test, new_dir_name="test")
