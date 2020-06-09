@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
     IMG_FILES = glob.glob(preprocess.SOURCE_DIR)
 
-    for i in IMG_FILES:
+    for i in tqdm(IMG_FILES):
         preprocess.subtract_local_average_color(img=i)
 
     # Create directories
